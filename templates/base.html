@@ -1,0 +1,186 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <!-- ===================================================== -->
+    <!-- BASIC PAGE CONFIGURATION -->
+    <!-- ===================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        {% block title %}
+
+            Nexora
+
+        {% endblock %}
+
+    </title>
+
+    <!-- ===================================================== -->
+    <!-- BOOTSTRAP CSS -->
+    <!-- ===================================================== -->
+
+    <link
+        href="{% static 'vendor/bootstrap/dist/css/bootstrap.min.css' %}"
+        rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="{% static 'vendor/bootstrap-icons/font/bootstrap-icons.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'vendor/fonts/fonts.css' %}">
+    <!-- ===================================================== -->
+    <!-- CUSTOM CSS -->
+    <!-- ===================================================== -->
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/resource_manager.css' %}">
+    <link rel="stylesheet" href="{% static 'css/resume_analyzer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/document_toolkit.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+
+</head>
+
+<body>
+
+    <!-- ===================================================== -->
+    <!-- NAVIGATION BAR -->
+    <!-- ===================================================== -->
+
+    {% block navbar %}
+
+        {% include "includes/navbar.html" %}
+
+    {% endblock %}
+
+    <!-- ===================================================== -->
+    <!-- DJANGO MESSAGES -->
+    <!-- ===================================================== -->
+
+    {% if messages %}
+
+        <div class="container-fluid mt-3">
+
+            {% for message in messages %}
+
+                <div class="alert alert-{{ message.tags }}">
+
+                    {{ message }}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+    <!-- ===================================================== -->
+    <!-- MAIN LAYOUT -->
+    <!-- ===================================================== -->
+
+    {% block layout %}
+
+        <div class="container mt-5">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+
+    {% endblock %}
+
+    {% if user.is_authenticated %}
+        {% include "includes/confirm_modal.html" %}
+    {% endif %}
+
+    <!-- ===================================================== -->
+    <!-- BOOTSTRAP JAVASCRIPT -->
+    <!-- ===================================================== -->
+
+    <script
+        src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}">
+    </script>
+    
+    <script src="{% static 'js/resource_manager.js' %}"></script>
+
+    <!-- ===================================================== -->
+    <!-- PAGE SPECIFIC JAVASCRIPT -->
+    <!-- ===================================================== -->
+    <!--
+        Child templates can inject additional
+        JavaScript by overriding this block.
+
+        Example:
+
+        • PDF Viewer
+        • Resume Analyzer
+        • Charts
+        • Custom Form Validation
+
+        If a page does not override this block,
+        nothing will be rendered.
+    -->
+
+    {% block extra_js %}
+
+    {% endblock %}
+
+    <!-- ===================================================== -->
+    <!-- RESOURCE SUMMARY MODAL -->
+    <!-- ===================================================== -->
+
+    <div
+        class="modal fade"
+        id="summaryModal"
+        tabindex="-1"
+    >
+
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5
+                        class="modal-title"
+                        id="summaryModalTitle"
+                    >
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div
+                    class="modal-body"
+                    id="summaryModalBody"
+                >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

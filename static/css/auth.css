@@ -1,0 +1,209 @@
+/* ============================================================
+   AUTH — LOGIN / REGISTER / PASSWORD RESET / VERIFICATION
+   ============================================================
+   Every accounts page shares one skeleton:
+
+       .auth-page > .card > .card-body > .auth-logo + heading + form
+
+   so the whole auth experience is restyled here, in one place,
+   with no template changes needed.
+   ============================================================ */
+
+.auth-page {
+    position: relative;
+    min-height: calc(100vh - 70px);
+    margin: -1rem -0.75rem;
+    padding: 3.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+
+    background:
+        radial-gradient(circle at 12% 8%, rgba(108, 92, 231, 0.16), transparent 42%),
+        radial-gradient(circle at 88% 12%, rgba(232, 163, 61, 0.14), transparent 40%),
+        radial-gradient(circle at 20% 92%, rgba(22, 163, 148, 0.12), transparent 40%),
+        radial-gradient(circle at 90% 88%, rgba(59, 107, 214, 0.12), transparent 42%),
+        var(--bg-canvas);
+}
+
+/* Soft blurred orbs floating behind the card -- purely
+   decorative, sits below everything (isolation + z-index). */
+.auth-page::before,
+.auth-page::after {
+    content: "";
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    filter: blur(70px);
+    z-index: -1;
+    opacity: 0.55;
+}
+
+.auth-page::before {
+    top: -80px;
+    left: -80px;
+    background: radial-gradient(circle, var(--violet-500), transparent 70%);
+}
+
+.auth-page::after {
+    bottom: -100px;
+    right: -80px;
+    background: radial-gradient(circle, var(--amber-500), transparent 70%);
+}
+
+/* ---------- Card ---------- */
+
+.auth-page .card {
+    position: relative;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-raised);
+    overflow: hidden;
+    background: var(--bg-surface);
+    animation: auth-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Gradient accent bar across the top of the card -- the one
+   consistent "brand stripe" across every auth screen. */
+.auth-page .card::before {
+    content: "";
+    display: block;
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--violet-600), var(--blue-500), var(--teal-500), var(--amber-500));
+    background-size: 300% 100%;
+    animation: auth-gradient-shift 8s ease infinite;
+}
+
+@keyframes auth-gradient-shift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes auth-card-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-page .card-body { padding: 2.6rem 2.6rem; }
+
+/* ---------- Logo badge ---------- */
+/* .auth-logo is a plain <img>; turning it into a circular
+   gradient badge needs no markup change since PNG logos are
+   transparent -- padding + background just frame it. */
+
+.auth-logo {
+    display: block;
+    width: 68px;
+    height: 68px;
+    object-fit: contain;
+    margin: 0 auto 1.3rem;
+    padding: 13px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--violet-100), var(--blue-100));
+    box-shadow: 0 6px 18px rgba(108, 92, 231, 0.18);
+}
+
+/* ---------- Headings & copy ---------- */
+
+.auth-page h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--ink-900), var(--violet-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+html[data-theme="dark"] .auth-page h2 {
+    background: linear-gradient(90deg, #fff, var(--violet-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.auth-page .text-muted {
+    font-size: 0.92rem;
+}
+
+/* ---------- Form controls ---------- */
+
+.auth-page .form-label {
+    font-size: 0.84rem;
+}
+
+.auth-page .form-control {
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    background: var(--bg-canvas);
+}
+
+.auth-page .form-control:focus {
+    background: var(--bg-surface);
+}
+
+/* ---------- Buttons ---------- */
+/* Pill-shaped in the auth context specifically -- a deliberate
+   small visual break from the app's squarer buttons elsewhere,
+   so login/register reads as its own distinct "front door". */
+
+.auth-page .btn-primary,
+.auth-page .btn-outline-primary {
+    border-radius: 999px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.98rem;
+    letter-spacing: 0.01em;
+}
+
+.auth-page .btn-primary {
+    background: linear-gradient(135deg, var(--violet-600), var(--blue-500));
+    border: none;
+    box-shadow: 0 10px 24px rgba(108, 92, 231, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-page .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(108, 92, 231, 0.34);
+    background: linear-gradient(135deg, var(--violet-600), var(--blue-500));
+}
+
+.auth-page .btn-link {
+    font-weight: 600;
+    font-size: 0.86rem;
+}
+
+/* ---------- Divider ---------- */
+
+.auth-page hr {
+    opacity: 1;
+    height: 1px;
+    border: none;
+    background: linear-gradient(90deg, transparent, var(--border-soft), transparent);
+    margin: 1.6rem 0;
+}
+
+.auth-page .text-end a {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ---------- Status icon (verification / reset "check your
+   email" style screens) ---------- */
+
+.auth-page .bi-envelope-check,
+.auth-page .bi-check-circle,
+.auth-page .bi-x-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--violet-100);
+    color: var(--violet-600) !important;
+    margin: 0 auto 0.9rem;
+}

@@ -1,0 +1,61 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <div class="dashboard-header mb-4 d-flex justify-content-between align-items-end flex-wrap gap-2">
+        <div>
+            <h2>Recent Activity</h2>
+            <p class="text-muted mb-0">Every upload, conversion, collection change, and analysis, in one feed.</p>
+        </div>
+
+        {% if activity %}
+            <div class="activity-count-pill">
+                <i class="bi bi-activity"></i> {{ activity|length }} recent event{{ activity|length|pluralize }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+
+            {% if activity %}
+
+                <div class="activity-timeline activity-timeline-scroll">
+
+                    {% for item in activity %}
+
+                        <div class="activity-item type-{{ item.type }}">
+
+                            <div class="activity-icon-dot"><i class="bi {{ item.icon }}"></i></div>
+
+                            <a href="{{ item.url }}" class="activity-title d-block">
+                                {{ item.title }}
+                            </a>
+
+                            <div class="activity-meta">
+                                {{ item.meta }} &middot; <span title="{{ item.timestamp }}">{{ item.timestamp|timesince }} ago</span>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+                    <i class="bi bi-clock-history"></i>
+                    Nothing here yet. Upload a resource, run a Document Toolkit tool, or analyze your resume to get started.
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

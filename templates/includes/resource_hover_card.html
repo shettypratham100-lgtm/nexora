@@ -1,0 +1,29 @@
+{% load highlight_keywords %}
+
+<div class="resource-hover-card shadow-lg">
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+
+        <strong>
+
+            {{ resource.title }}
+
+        </strong>
+
+        <span class="badge bg-primary">
+
+            {{ resource.get_resource_type_display }}
+
+        </span>
+
+    </div>
+
+    <hr class="my-2">
+
+    <div class="small text-muted">
+
+        {{ resource.summary|highlight_keywords:resource.keywords|safe }}
+
+    </div>
+
+</div>

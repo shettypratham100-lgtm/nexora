@@ -1,0 +1,983 @@
+/* ============================================================
+   NEXORA — GLOBAL DESIGN SYSTEM
+   ============================================================
+   A calm, focused workspace identity for a student
+   productivity tool. Indigo/violet primary, warm amber for
+   AI moments, teal for success. Sora for headings (structured,
+   geometric -- reads "workspace", not "marketing site"),
+   Inter for body copy and UI.
+   ============================================================ */
+
+/* Font imports moved to vendor/fonts/fonts.css (self-hosted,
+   no CDN dependency) -- linked separately in base.html. */
+
+:root {
+
+    /* ---------- Bootstrap variable overrides ----------
+       Makes every bg-primary / text-primary / border-primary
+       utility class (used throughout the existing templates)
+       automatically pick up the Nexora palette. */
+    --bs-primary: #6C5CE7;
+    --bs-primary-rgb: 108, 92, 231;
+    --bs-link-color: #6C5CE7;
+    --bs-link-color-rgb: 108, 92, 231;
+    --bs-link-hover-color: #1B1F3B;
+    --bs-body-font-family: 'Inter', system-ui, sans-serif;
+
+    /* ---------- Color tokens ---------- */
+    --ink-900: #14162B;      /* deepest navy -- sidebar bg */
+    --ink-800: #1B1F3B;      /* navy -- navbar bg */
+    --ink-700: #2A2F55;      /* hover state on dark surfaces */
+    --violet-600: #6C5CE7;   /* primary accent */
+    --violet-500: #7C6DF0;
+    --violet-100: #EEEBFD;
+    --teal-500: #16A394;     /* success / positive */
+    --teal-100: #E3F7F4;
+    --amber-500: #E8A33D;    /* AI / attention */
+    --amber-100: #FCF1DE;
+    --coral-500: #E85D5D;    /* destructive */
+    --coral-100: #FCEAEA;
+    --blue-500: #3B6BD6;     /* storage / info */
+    --blue-100: #E3ECFC;
+
+    --bg-canvas: #F6F7FB;    /* page background */
+    --bg-surface: #FFFFFF;   /* cards */
+    --border-soft: #E6E8F0;
+
+    --text-primary: #1F2333;
+    --text-secondary: #6B7080;
+    --text-muted: #9498A8;
+    --text-on-dark: #E9EAF5;
+    --text-on-dark-muted: #9498C0;
+
+    /* ---------- Type ---------- */
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+
+    /* ---------- Radius / shadow ---------- */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --shadow-soft: 0 2px 10px rgba(20, 22, 43, 0.05);
+    --shadow-card: 0 4px 20px rgba(20, 22, 43, 0.06);
+    --shadow-raised: 0 12px 32px rgba(20, 22, 43, 0.12);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+    background: var(--bg-canvas);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+a { color: var(--violet-600); text-decoration: none; }
+a:hover { color: var(--ink-800); }
+
+::selection { background: var(--violet-100); color: var(--ink-900); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.nav-link:focus-visible {
+    outline: 2px solid var(--violet-500);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* ============================================================
+   NAVBAR (light theme)
+   ============================================================ */
+
+.navbar.bg-dark,
+.navbar.app-navbar {
+    background: var(--bg-surface) !important;
+    border-bottom: 1px solid var(--border-soft);
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    box-shadow: 0 1px 3px rgba(20, 22, 43, 0.03);
+}
+
+.sidebar-toggle-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    margin-right: 0.5rem;
+}
+
+.sidebar-toggle-btn:hover {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+}
+
+.navbar-brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary) !important;
+}
+
+.navbar-brand img {
+    height: 32px;
+    width: auto;
+}
+
+.navbar-dark .nav-link,
+.app-navbar .nav-link {
+    color: var(--text-secondary);
+    font-weight: 500;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navbar-dark .nav-link:hover,
+.app-navbar .nav-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-canvas);
+}
+
+.navbar .btn-outline-light {
+    border-color: var(--border-soft);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.navbar .btn-outline-light:hover {
+    background: var(--violet-600);
+    border-color: var(--violet-600);
+    color: #fff;
+}
+
+.navbar .btn-light {
+    background: var(--violet-600);
+    border-color: var(--violet-600);
+    color: #fff;
+    font-weight: 600;
+}
+
+.navbar .btn-light:hover {
+    background: var(--violet-500);
+    border-color: var(--violet-500);
+}
+
+.navbar-text {
+    color: var(--text-secondary) !important;
+}
+
+/* ---------- Navbar icon buttons (bell, theme toggle) ---------- */
+
+.navbar-icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    position: relative;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navbar-icon-btn:hover {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+}
+
+.navbar-icon-btn .notif-dot {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--coral-500);
+    border: 2px solid var(--bg-surface);
+}
+
+.navbar-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--violet-600), var(--amber-500));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    border: none;
+}
+
+/* ---------- Notification dropdown ---------- */
+
+.notif-dropdown {
+    width: 280px;
+    padding: 0;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-raised);
+}
+
+.notif-dropdown .notif-header {
+    padding: 0.85rem 1rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.notif-dropdown .notif-empty {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+}
+
+/* ---------- Global search ---------- */
+
+.search-wrapper {
+    position: relative;
+    flex-grow: 1;
+    max-width: 480px;
+}
+
+.search-wrapper .form-control {
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-soft);
+    color: var(--text-primary);
+    border-radius: 999px;
+    padding-left: 2.5rem;
+}
+
+.search-wrapper::before {
+    content: "\F52A";
+    font-family: "bootstrap-icons";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.search-wrapper .form-control::placeholder { color: var(--text-muted); }
+
+.search-wrapper .form-control:focus {
+    background: var(--bg-surface);
+    border-color: var(--violet-500);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+    color: var(--text-primary);
+}
+
+#liveSearchPanel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-raised);
+    overflow: hidden;
+    z-index: 1050;
+}
+
+#liveSearchPanel:empty { display: none; }
+
+.recent-search-item {
+    padding: 0.6rem 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.recent-search-item:last-child { border-bottom: none; }
+
+.recent-search-item:hover {
+    background: var(--violet-100);
+    color: var(--ink-900);
+}
+
+/* ============================================================
+   SIDEBAR (light theme)
+   ============================================================ */
+
+.app-sidebar {
+    background: var(--bg-surface);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-soft);
+    transition: width 0.2s ease;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* ---------- Sticky sidebar ----------
+   Bootstrap's row stretches every column to match the tallest
+   one -- on a long page, the sidebar column would stretch to
+   match the content column's height, leaving a big blank gap
+   below the sidebar's own (much shorter) nav content. Pinning
+   the column to the viewport keeps it a fixed height and
+   always visible while the content column scrolls underneath
+   it instead. */
+
+.sidebar-col {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+}
+
+.app-sidebar .p-3.border-bottom {
+    border-color: var(--border-soft) !important;
+}
+
+.app-sidebar h4 {
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.app-sidebar .nav-link {
+    position: relative;
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    font-size: 0.94rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 2px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.app-sidebar .nav-link:hover {
+    background: var(--bg-canvas);
+    color: var(--text-primary) !important;
+}
+
+.app-sidebar .nav-link.active-sidebar {
+    background: var(--violet-100);
+    color: var(--violet-600) !important;
+    font-weight: 700;
+}
+
+.app-sidebar .nav-link.text-danger { color: var(--coral-500) !important; }
+
+.app-sidebar .nav-link.text-danger:hover {
+    background: var(--coral-100);
+    color: var(--coral-500) !important;
+}
+
+.app-sidebar .nav-link i {
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
+    display: inline-block;
+}
+
+.app-sidebar hr { border-color: var(--border-soft); opacity: 1; }
+
+/* ---------- Sidebar logo ---------- */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-logo-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.sidebar-logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.sidebar-logo-text {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+/* ---------- Quick Links section label ---------- */
+
+.sidebar-section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    padding: 0.4rem 0.2rem;
+}
+
+/* ---------- Spacer pushes storage+footer to bottom ---------- */
+
+.sidebar-spacer {
+    flex-grow: 1;
+}
+
+/* ---------- Storage widget ----------
+   Previously used --bg-canvas (near-white) inside the sidebar,
+   which is also near-white -- nearly invisible against its own
+   surroundings. Now a proper card with an icon badge and a fill
+   color that shifts with usage, so it reads as a real, distinct
+   component instead of blending into the sidebar. */
+
+.storage-widget {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    background: linear-gradient(155deg, var(--violet-100), var(--bg-surface) 70%);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(20, 22, 43, 0.05);
+    padding: 0.8rem 0.85rem;
+}
+
+.storage-widget-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #fff;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--violet-600), var(--violet-500));
+}
+
+.storage-widget-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.storage-widget-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.45rem;
+}
+
+.storage-widget-pct {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--violet-600);
+}
+
+.storage-widget-bar {
+    height: 7px;
+    border-radius: 999px;
+    background: var(--border-soft);
+    overflow: hidden;
+}
+
+.storage-widget-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--violet-600), var(--violet-500));
+    transition: width 0.3s ease;
+}
+
+.storage-widget-sub {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+/* Usage tiers -- storage getting full is worth noticing */
+
+.storage-widget.storage-widget-warn .storage-widget-icon { background: linear-gradient(135deg, var(--amber-500), #C97F1F); }
+.storage-widget.storage-widget-warn .storage-widget-pct  { color: var(--amber-500); }
+.storage-widget.storage-widget-warn .storage-widget-fill { background: linear-gradient(90deg, var(--amber-500), #C97F1F); }
+
+.storage-widget.storage-widget-critical { background: linear-gradient(155deg, var(--coral-100), var(--bg-surface) 70%); }
+.storage-widget.storage-widget-critical .storage-widget-icon { background: linear-gradient(135deg, var(--coral-500), #C23C3C); }
+.storage-widget.storage-widget-critical .storage-widget-pct  { color: var(--coral-500); }
+.storage-widget.storage-widget-critical .storage-widget-fill { background: linear-gradient(90deg, var(--coral-500), #C23C3C); }
+
+/* ---------- User profile footer ---------- */
+
+.sidebar-user-footer {
+    border-color: var(--border-soft) !important;
+}
+
+.sidebar-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--violet-600), var(--amber-500));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.sidebar-user-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-user-email {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-logout-icon {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.sidebar-logout-icon:hover {
+    color: var(--coral-500);
+}
+
+/* ============================================================
+   COLLAPSED SIDEBAR STATE
+   ============================================================
+   Toggled by the hamburger button in the navbar (see
+   resource_manager.js). Persisted in localStorage so it
+   survives page loads. */
+
+body.sidebar-collapsed .app-sidebar {
+    width: 100%;
+}
+
+/* Override Bootstrap's fixed percentage-width grid columns --
+   without this, the sidebar's outer column keeps reserving its
+   original 25%/16.67% width no matter how narrow the inner
+   .app-sidebar div gets, leaving dead space instead of letting
+   the content column actually expand. */
+body.sidebar-collapsed .sidebar-col {
+    flex: 0 0 76px;
+    max-width: 76px;
+}
+
+body.sidebar-collapsed .content-col {
+    flex: 0 0 calc(100% - 76px);
+    max-width: calc(100% - 76px);
+}
+
+body.sidebar-collapsed .app-sidebar .sidebar-logo-text,
+body.sidebar-collapsed .app-sidebar .nav-link span,
+body.sidebar-collapsed .app-sidebar .sidebar-section-label,
+body.sidebar-collapsed .app-sidebar .storage-widget,
+body.sidebar-collapsed .app-sidebar .sidebar-user-name,
+body.sidebar-collapsed .app-sidebar .sidebar-user-email,
+body.sidebar-collapsed .app-sidebar .sidebar-logout-icon {
+    display: none;
+}
+
+body.sidebar-collapsed .app-sidebar .nav-link {
+    display: flex;
+    justify-content: center;
+}
+
+body.sidebar-collapsed .app-sidebar .nav-link i {
+    margin-right: 0;
+}
+
+/* ============================================================
+   DARK MODE
+   ============================================================
+   Toggled via the sun/moon icon in the navbar (see
+   resource_manager.js), persisted in localStorage as
+   data-theme="dark" on <html>.
+   ============================================================ */
+
+html[data-theme="dark"] {
+    --bg-canvas: #14162B;
+    --bg-surface: #1B1F3B;
+    --border-soft: #2A2F55;
+    --text-primary: #E9EAF5;
+    --text-secondary: #B4B7D6;
+    --text-muted: #8285AA;
+    --violet-100: rgba(108, 92, 231, 0.16);
+    --teal-100: rgba(22, 163, 148, 0.16);
+    --amber-100: rgba(232, 163, 61, 0.16);
+    --coral-100: rgba(232, 93, 93, 0.16);
+}
+
+html[data-theme="dark"] .navbar-icon-btn .bi-moon-stars::before {
+    content: "\F5A2"; /* sun icon glyph swap */
+}
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 1.1rem;
+    transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn-primary { background: var(--violet-600); border-color: var(--violet-600); }
+
+.btn-primary:hover, .btn-primary:focus {
+    background: var(--ink-800);
+    border-color: var(--ink-800);
+}
+
+.btn-outline-primary { color: var(--violet-600); border-color: var(--violet-600); }
+
+.btn-outline-primary:hover {
+    background: var(--violet-600);
+    border-color: var(--violet-600);
+}
+
+.btn-success { background: var(--teal-500); border-color: var(--teal-500); }
+.btn-danger  { background: var(--coral-500); border-color: var(--coral-500); }
+
+.btn-sm { padding: 0.35rem 0.75rem; font-size: 0.85rem; }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border-soft);
+    font-family: var(--font-display);
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+}
+
+.card-body { padding: 1.25rem; }
+
+.shadow, .shadow-sm { box-shadow: var(--shadow-card) !important; }
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+}
+
+.form-control, .form-select {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.85rem;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    background: var(--bg-surface);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--violet-500);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+}
+
+.form-control::placeholder { color: var(--text-muted); }
+
+/* ============================================================
+   ALERTS / MESSAGES
+   ============================================================ */
+
+.alert {
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    border-left: 4px solid transparent;
+}
+
+.alert-success { background: var(--teal-100); color: #0E6E62; border-left-color: var(--teal-500); }
+.alert-danger  { background: var(--coral-100); color: #A93A3A; border-left-color: var(--coral-500); }
+.alert-warning { background: var(--amber-100); color: #8A5D14; border-left-color: var(--amber-500); }
+.alert-info    { background: var(--violet-100); color: var(--ink-800); border-left-color: var(--violet-600); }
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+.badge { font-weight: 600; border-radius: 6px; padding: 0.4em 0.7em; }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.modal-content {
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-raised);
+}
+
+.modal-header { border-bottom: 1px solid var(--border-soft); padding: 1.1rem 1.4rem; }
+
+.modal-title { font-family: var(--font-display); font-weight: 700; }
+
+.modal-body { padding: 1.4rem; }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: #D3D6E3;
+    border-radius: 10px;
+    border: 2px solid var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb:hover { background: #B7BBD1; }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+.text-muted { color: var(--text-secondary) !important; }
+
+.min-w-0 { min-width: 0; }
+
+.empty-state { text-align: center; padding: 3rem 1.5rem; color: var(--text-secondary); }
+
+.empty-state i {
+    font-size: 2.2rem;
+    color: var(--violet-500);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+/* ---------- Page header icon badge ----------
+   Reusable gradient icon chip used next to page titles
+   (Collections, Trash, Starred, Resume Analyzer, etc.) so
+   each section reads with its own identity while sharing the
+   same palette. */
+
+.page-header-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba(20, 22, 43, 0.15);
+}
+
+.page-header-icon.accent-violet { background: linear-gradient(135deg, var(--violet-600), var(--violet-500)); }
+.page-header-icon.accent-teal   { background: linear-gradient(135deg, var(--teal-500), #0E6E62); }
+.page-header-icon.accent-amber  { background: linear-gradient(135deg, var(--amber-500), #C97F1F); }
+.page-header-icon.accent-coral  { background: linear-gradient(135deg, var(--coral-500), #C23C3C); }
+.page-header-icon.accent-blue   { background: linear-gradient(135deg, var(--blue-500), #2A4E9E); }
+
+/* ---------- Text color utilities ---------- */
+
+.text-teal   { color: var(--teal-500) !important; }
+.text-amber  { color: var(--amber-500) !important; }
+.text-coral  { color: var(--coral-500) !important; }
+.text-violet { color: var(--violet-600) !important; }
+.text-blue   { color: var(--blue-500) !important; }
+
+/* ============================================================
+   MOBILE RESPONSIVE LAYER
+   ============================================================
+   Below 768px, the sidebar becomes an off-canvas drawer instead
+   of a permanent column -- the desktop grid (fixed-width
+   Bootstrap columns side-by-side) doesn't work on small
+   screens. Reuses the SAME body.sidebar-collapsed class the
+   hamburger button already toggles; it just means something
+   different at this breakpoint (open/close the drawer, not
+   icon-only mode).
+   ============================================================ */
+
+@media (max-width: 767.98px) {
+
+    /* Content always takes the full width -- there's no
+       permanent sidebar column to share space with anymore. */
+    .content-col {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 1rem !important;
+    }
+
+    /* Sidebar becomes a fixed off-canvas drawer, hidden by
+       default (slid off-screen to the left). */
+    .sidebar-col {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 270px;
+        max-width: 82%;
+        z-index: 1055;
+        flex: 0 0 auto;
+        max-width: 82%;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        box-shadow: var(--shadow-raised);
+    }
+
+    .app-sidebar {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Slide the drawer in when the hamburger is toggled open. */
+    body.sidebar-collapsed .sidebar-col {
+        transform: translateX(0);
+    }
+
+    /* On mobile we want the FULL sidebar (labels, storage
+       widget, profile footer) inside the drawer -- not the
+       icon-only desktop "collapsed" look. Undo those overrides. */
+    body.sidebar-collapsed .app-sidebar {
+        width: 100%;
+    }
+
+    body.sidebar-collapsed .app-sidebar .sidebar-logo-text,
+    body.sidebar-collapsed .app-sidebar .nav-link span,
+    body.sidebar-collapsed .app-sidebar .sidebar-section-label,
+    body.sidebar-collapsed .app-sidebar .storage-widget,
+    body.sidebar-collapsed .app-sidebar .sidebar-user-name,
+    body.sidebar-collapsed .app-sidebar .sidebar-user-email,
+    body.sidebar-collapsed .app-sidebar .sidebar-logout-icon {
+        display: block !important;
+    }
+
+    body.sidebar-collapsed .app-sidebar .nav-link {
+        justify-content: flex-start;
+    }
+
+    body.sidebar-collapsed .app-sidebar .nav-link i {
+        margin-right: 10px;
+    }
+
+    /* Dimmed backdrop behind the open drawer -- tap it to close
+       (see resource_manager.js). */
+    .sidebar-backdrop {
+        display: none;
+    }
+
+    body.sidebar-collapsed .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(20, 22, 43, 0.5);
+        z-index: 1050;
+    }
+
+    /* ---------- Navbar ---------- */
+
+    .navbar-brand span,
+    .navbar-brand { font-size: 1.1rem; }
+
+    .search-wrapper {
+        max-width: none;
+    }
+
+    /* ---------- Dashboard stat cards / quick actions ---------- */
+
+    .quick-action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.6rem;
+    }
+
+    /* ---------- Auth pages ---------- */
+
+    .auth-page {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .auth-page .card-body {
+        padding: 1.5rem !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+
+    .landing-hero-title {
+        font-size: 1.9rem;
+    }
+
+    .landing-hero { padding: 3rem 1rem 3rem; }
+
+    .landing-hero-actions {
+        flex-direction: column;
+    }
+
+    .landing-hero-actions .btn {
+        width: 100%;
+    }
+
+    .landing-cta-band h2 {
+        font-size: 1.4rem;
+    }
+}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Invalid Verification Link{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center auth-page">
+
+    <div class="col-lg-5 col-md-7">
+
+        <div class="card shadow">
+
+            <div class="card-body p-4 text-center">
+
+                <img src="{% static 'images/logo.png' %}" alt="Nexora" class="auth-logo">
+
+                <i class="bi bi-x-circle" style="font-size: 2.5rem; color: var(--coral-500);"></i>
+
+                <h2 class="mb-3 mt-2">Link Expired or Invalid</h2>
+
+                <p class="text-muted mb-4">
+                    This verification link is invalid or has already been used.
+                    Request a new one below.
+                </p>
+
+                <a href="{% url 'accounts:resend_verification' %}" class="btn btn-primary w-100">Resend Verification Email</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

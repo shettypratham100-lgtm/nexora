@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block layout %}
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- ===================================== -->
+        <!-- SIDEBAR -->
+        <!-- ===================================== -->
+
+        <div class="col-md-3 col-lg-2 sidebar-col p-0">
+
+            {% include "includes/sidebar.html" %}
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- MAIN CONTENT -->
+        <!-- ===================================== -->
+
+        <div class="col-md-9 col-lg-10 content-col p-4">
+
+            {% block dashboard_content %}
+
+            {% endblock %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

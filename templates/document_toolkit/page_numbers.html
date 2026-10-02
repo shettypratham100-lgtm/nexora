@@ -1,0 +1,50 @@
+{% extends "document_toolkit/toolkit_base.html" %}
+
+{% block tool_form %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label class="file-dropzone mb-3">
+        <input type="file" name="file" accept="application/pdf" required>
+        <i class="bi bi-cloud-upload"></i>
+        <div class="dropzone-title">Click or drag a PDF here</div>
+        <div class="dropzone-hint">Select the PDF to number</div>
+    </label>
+
+    <div class="row g-3 mb-3">
+
+        <div class="col-md-6">
+            <label class="form-label">Position</label>
+            {{ form.vertical_position }}
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Alignment</label>
+            {{ form.alignment }}
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Number Format</label>
+            {{ form.number_format }}
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Starting Number</label>
+            {{ form.start_at }}
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Font Size</label>
+            {{ form.font_size }}
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-list-ol"></i> Add Page Numbers
+    </button>
+
+</form>
+
+{% endblock %}

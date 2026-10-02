@@ -1,0 +1,43 @@
+{% extends "document_toolkit/toolkit_base.html" %}
+
+{% block tool_form %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label class="file-dropzone mb-3">
+        <input type="file" name="file" accept="application/pdf" required>
+        <i class="bi bi-cloud-upload"></i>
+        <div class="dropzone-title">Click or drag a PDF here</div>
+        <div class="dropzone-hint">Select the PDF you want to split</div>
+    </label>
+
+    <div class="mb-3">
+        <label class="form-label">{{ form.mode.label }}</label>
+        {{ form.mode }}
+    </div>
+
+    <div class="row g-2 mb-2">
+        <div class="col-6">
+            <label class="form-label">Start page</label>
+            {{ form.start_page }}
+        </div>
+        <div class="col-6">
+            <label class="form-label">End page</label>
+            {{ form.end_page }}
+        </div>
+    </div>
+
+    {% if form.non_field_errors %}
+        <div class="text-danger small mb-2">{{ form.non_field_errors.0 }}</div>
+    {% endif %}
+
+    <div class="text-muted small mb-3">Start/end page only apply when "Extract a page range" is selected.</div>
+
+    <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-scissors"></i> Split PDF
+    </button>
+
+</form>
+
+{% endblock %}

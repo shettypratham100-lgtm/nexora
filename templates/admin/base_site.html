@@ -1,0 +1,53 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}
+    Nexora Admin
+{% endblock %}
+
+
+{% block extrastyle %}
+
+    {{ block.super }}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'vendor/fonts/fonts.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/admin_custom.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block branding %}
+
+<div id="site-name">
+
+    <a
+        href="{% url 'admin:index' %}"
+        class="nexora-admin-brand"
+    >
+
+        <img
+            src="{% static 'images/logo.png' %}"
+            alt="Nexora"
+            class="nexora-admin-logo"
+        >
+
+        <span>
+            Nexora Admin
+        </span>
+
+    </a>
+
+</div>
+
+{% endblock %}
+
+
+{% block nav-global %}
+{% endblock %}

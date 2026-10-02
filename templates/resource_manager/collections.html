@@ -1,0 +1,155 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<!-- ===================================================== -->
+<!-- COLLECTION LIST PAGE -->
+<!-- ===================================================== -->
+<!--
+    Displays all collections created by the
+    currently logged-in user.
+-->
+<!-- ===================================================== -->
+
+<div class="container-fluid">
+
+    <!-- ============================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ============================================== -->
+
+    <div class="dashboard-header mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="page-header-icon accent-teal"><i class="bi bi-folder2-open"></i></div>
+
+            <div>
+                <h2 class="mb-0">My Collections</h2>
+                <p class="text-muted mb-0">Organize your study resources.</p>
+            </div>
+
+        </div>
+
+        <a
+            href="{% url 'resource_manager:create_collection' %}"
+            class="btn btn-primary"
+        >
+            <i class="bi bi-plus-lg"></i> New Collection
+        </a>
+
+    </div>
+
+    <!-- ============================================== -->
+    <!-- COLLECTION GRID -->
+    <!-- ============================================== -->
+
+    {% if collections %}
+
+        <div class="row g-4">
+
+            {% for collection in collections %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card collection-card-full h-100">
+
+                        <div class="d-flex justify-content-between align-items-start">
+
+                            <div class="collection-icon"><i class="bi bi-folder-fill"></i></div>
+
+                            <!-- ====================================== -->
+                            <!-- STAR TOGGLE -->
+                            <!-- ====================================== -->
+
+                            <form method="post" action="{% url 'resource_manager:toggle_star_collection' collection.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-star" title="{% if collection.is_starred %}Unstar{% else %}Star{% endif %}">
+                                    {% if collection.is_starred %}
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    {% else %}
+                                        <i class="bi bi-star"></i>
+                                    {% endif %}
+                                </button>
+                            </form>
+
+                        </div>
+
+                        <a href="{% url 'resource_manager:collection_detail' collection.pk %}" class="collection-name mt-3 d-block text-decoration-none">
+                            {{ collection.name }}
+                        </a>
+
+                        <p class="collection-card-desc">{{ collection.description|default:"No description." }}</p>
+
+                        <div class="collection-card-footer">
+
+                            <div class="collection-meta">
+                                <i class="bi bi-file-earmark"></i> {{ collection.resource_count }} resource{{ collection.resource_count|pluralize }}
+                                &middot; {{ collection.created_at|date:"d M Y" }}
+                            </div>
+
+                            <div class="collection-card-actions">
+
+                                <a
+                                    href="{% url 'resource_manager:collection_detail' collection.pk %}"
+                                    class="btn btn-sm btn-outline-primary"
+                                    title="View"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                <a
+                                    href="{% url 'resource_manager:edit_collection' collection.pk %}"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    title="Edit"
+                                >
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                                <a
+                                    href="{% url 'resource_manager:delete_collection' collection.pk %}"
+                                    class="btn btn-sm btn-outline-danger"
+                                    title="Delete"
+                                >
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- ====================================== -->
+        <!-- EMPTY STATE -->
+        <!-- ====================================== -->
+
+        <div class="card">
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="bi bi-folder2-open"></i>
+                    No collections yet. Create your first one to start organizing your study resources.
+                    <div class="mt-3">
+                        <a
+                            href="{% url 'resource_manager:create_collection' %}"
+                            class="btn btn-primary"
+                        >
+                            Create Collection
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

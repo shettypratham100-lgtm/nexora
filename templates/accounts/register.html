@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- ====================================================== -->
+<!-- PAGE TITLE -->
+<!-- ====================================================== -->
+
+{% block title %}
+
+Register
+
+{% endblock %}
+
+
+<!-- ====================================================== -->
+<!-- PAGE CONTENT -->
+<!-- ====================================================== -->
+
+{% block content %}
+
+<div class="row justify-content-center auth-page">
+
+    <div class="col-lg-6 col-md-8">
+
+        <!-- ============================================= -->
+        <!-- REGISTRATION CARD -->
+        <!-- ============================================= -->
+
+        <div class="card shadow">
+
+            <div class="card-body p-4">
+
+                <img src="{% static 'images/logo.png' %}" alt="Nexora" class="auth-logo">
+
+                <!-- ===================================== -->
+                <!-- PAGE HEADING -->
+                <!-- ===================================== -->
+
+                <h2 class="text-center mb-4">
+
+                    Create Nexora Account
+
+                </h2>
+
+                <!-- ===================================== -->
+                <!-- REGISTRATION FORM -->
+                <!-- ===================================== -->
+
+                <form method="POST">
+
+                    <!--
+                        CSRF Token
+
+                        Protects the application from
+                        Cross Site Request Forgery attacks.
+
+                        Every POST form in Django
+                        should contain this tag.
+                    -->
+
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                        <div class="text-danger">
+                            {{ form.first_name.errors }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                        <div class="text-danger">
+                            {{ form.last_name.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Username -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Username
+
+                        </label>
+
+                        {{ form.username }}
+
+                        {{ form.username.errors }}
+
+                    </div>
+
+                    <!-- Email -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Email
+
+                        </label>
+
+                        {{ form.email }}
+
+                        {{ form.email.errors }}
+
+                    </div>
+
+                    <!-- Password -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Password
+
+                        </label>
+
+                        {{ form.password1 }}
+
+                        {{ form.password1.errors }}
+
+                    </div>
+
+                    <!-- Confirm Password -->
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Confirm Password
+
+                        </label>
+
+                        {{ form.password2 }}
+
+                        {{ form.password2.errors }}
+
+                    </div>
+
+                    <!-- Register Button -->
+
+                    <div class="d-grid">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            Create Account
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr>
+
+                <!-- Already Have Account -->
+
+                <p class="text-center">
+
+                    Already have an account?
+
+                    <a href="{% url 'accounts:login' %}">
+
+                        Login
+
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

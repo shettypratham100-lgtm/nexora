@@ -1,0 +1,158 @@
+{% extends "document_toolkit/toolkit_base.html" %}
+
+{% block tool_form %}
+
+<form method="post" enctype="multipart/form-data" id="imagesToPdfForm">
+    {% csrf_token %}
+
+    <label class="file-dropzone mb-3" id="dropzone">
+        <input type="file" id="imageInput" accept="image/*" multiple>
+        <i class="bi bi-cloud-upload"></i>
+        <div class="dropzone-title">Click or drag images here</div>
+        <div class="dropzone-hint">Add images, then drag the thumbnails below to set the page order</div>
+    </label>
+
+    <div class="image-grid" id="imageGrid">
+        <div class="image-grid-empty" id="emptyMessage">
+            <i class="bi bi-images"></i>
+            No images selected yet.
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 mt-3" id="createPdfButton" disabled>
+        <i class="bi bi-file-earmark-image"></i> Convert to PDF
+    </button>
+
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const imageInput = document.getElementById("imageInput");
+    const imageGrid = document.getElementById("imageGrid");
+    const emptyMessage = document.getElementById("emptyMessage");
+    const createPdfButton = document.getElementById("createPdfButton");
+    const form = document.getElementById("imagesToPdfForm");
+
+    let selectedFiles = [];
+
+    imageInput.addEventListener("change", function () {
+
+        Array.from(imageInput.files).forEach(function (file) {
+            const exists = selectedFiles.some(f =>
+                f.name === file.name && f.size === file.size && f.lastModified === file.lastModified
+            );
+            if (!exists) selectedFiles.push(file);
+        });
+
+        imageInput.value = "";
+        render();
+
+    });
+
+    function render() {
+
+        imageGrid.innerHTML = "";
+
+        if (!selectedFiles.length) {
+            imageGrid.appendChild(emptyMessage);
+            createPdfButton.disabled = true;
+            return;
+        }
+
+        createPdfButton.disabled = false;
+
+        selectedFiles.forEach(function (file, index) {
+
+            const card = document.createElement("div");
+            card.className = "image-card";
+            card.draggable = true;
+            card.dataset.index = index;
+
+            const thumbWrap = document.createElement("div");
+            thumbWrap.className = "image-card-thumb";
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            thumbWrap.appendChild(img);
+
+            const pageLabel = document.createElement("div");
+            pageLabel.className = "image-card-page";
+            pageLabel.textContent = "Page " + (index + 1);
+
+            const name = document.createElement("div");
+            name.className = "image-card-name";
+            name.title = file.name;
+            name.textContent = file.name;
+
+            const dragHint = document.createElement("div");
+            dragHint.className = "image-card-drag-hint";
+            dragHint.innerHTML = '<i class="bi bi-grip-vertical"></i> Hold and drag';
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "image-card-remove";
+            removeBtn.innerHTML = '<i class="bi bi-trash"></i> Remove';
+            removeBtn.addEventListener("click", function () {
+                selectedFiles.splice(index, 1);
+                render();
+            });
+
+            card.appendChild(thumbWrap);
+            card.appendChild(pageLabel);
+            card.appendChild(name);
+            card.appendChild(dragHint);
+            card.appendChild(removeBtn);
+
+            card.addEventListener("dragstart", function (e) {
+                e.dataTransfer.setData("text/plain", String(index));
+                card.classList.add("dragging");
+            });
+
+            card.addEventListener("dragend", function () {
+                card.classList.remove("dragging");
+            });
+
+            card.addEventListener("dragover", function (e) {
+                e.preventDefault();
+            });
+
+            card.addEventListener("drop", function (e) {
+                e.preventDefault();
+                const fromIndex = parseInt(e.dataTransfer.getData("text/plain"), 10);
+                const toIndex = index;
+                if (Number.isNaN(fromIndex) || fromIndex === toIndex) return;
+
+                const moved = selectedFiles.splice(fromIndex, 1)[0];
+                selectedFiles.splice(toIndex, 0, moved);
+                render();
+            });
+
+            imageGrid.appendChild(card);
+
+        });
+
+    }
+
+    // Sync the reordered/curated files back into a real
+    // <input type="file"> via DataTransfer, then let the normal
+    // Django form POST proceed as usual.
+    form.addEventListener("submit", function (event) {
+
+        if (selectedFiles.length === 0) {
+            event.preventDefault();
+            return;
+        }
+
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        imageInput.files = dt.files;
+        imageInput.name = "files";
+
+    });
+
+    render();
+
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,263 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <!-- ===================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ===================================== -->
+
+    <div class="dashboard-welcome-banner mb-4">
+        <div>
+            <h2>Welcome back, {{ user.first_name|default:user.username }} 👋</h2>
+            <p class="mb-0">Your AI-powered student workspace.</p>
+        </div>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- STAT CARDS -->
+    <!-- ===================================== -->
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card accent-amber">
+                <div>
+                    <div class="stat-label">Collections</div>
+                    <div class="stat-value">{{ total_collections }}</div>
+                    <div class="stat-sub">Total Collections</div>
+                </div>
+                <div class="stat-icon"><i class="bi bi-collection"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card accent-teal">
+                <div>
+                    <div class="stat-label">Resources</div>
+                    <div class="stat-value">{{ total_resources }}</div>
+                    <div class="stat-sub">Total Resources</div>
+                </div>
+                <div class="stat-icon"><i class="bi bi-folder2-open"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card accent-violet">
+                <div>
+                    <div class="stat-label">Documents</div>
+                    <div class="stat-value">{{ total_documents }}</div>
+                    <div class="stat-sub">Total Documents</div>
+                </div>
+                <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card accent-blue">
+                <div>
+                    <div class="stat-label">Storage Used</div>
+                    <div class="stat-value">{{ storage.used_gb }} GB</div>
+                    <div class="stat-sub">of {{ storage.limit_gb }} GB Used</div>
+                </div>
+                <div class="stat-icon stat-icon-ring" style="--pct: {{ storage.percent_used }};">
+                    <i class="bi bi-cloud-fill"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- RECENT RESOURCES + QUICK ACTIONS -->
+    <!-- ===================================== -->
+
+    <div class="row g-4 mt-1">
+
+        <div class="col-lg-8">
+
+            <div class="card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    Recent Resources
+                    <a href="{% url 'resource_manager:collection_list' %}" class="small text-decoration-none">View All Resources &rarr;</a>
+                </div>
+
+                <div class="card-body">
+
+                    {% if recent_resources %}
+
+                        <div class="recent-resource-list">
+
+                            {% for resource in recent_resources %}
+
+                                <a href="{% url 'resource_manager:view_resource' resource.pk %}" class="recent-resource-row">
+
+                                    <div class="rr-icon rr-type-{{ resource.resource_type|lower }}">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </div>
+
+                                    <div class="rr-info">
+                                        <div class="rr-title">{{ resource.title }}</div>
+                                        <div class="rr-meta">{{ resource.get_resource_type_display }} &middot; Updated {{ resource.updated_at|timesince }} ago</div>
+                                    </div>
+
+                                    <div class="rr-tag">{{ resource.collection.name }}</div>
+
+                                </a>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-state">
+                            <i class="bi bi-folder2-open"></i>
+                            No resources yet. Upload your first one to get started.
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 d-flex flex-column gap-4">
+
+            <div class="card">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    Recent Activity
+                    <a href="{% url 'dashboard:recent_activity' %}" class="small text-decoration-none">View All &rarr;</a>
+                </div>
+
+                <div class="card-body">
+
+                    {% if recent_activity_preview %}
+
+                        <div class="activity-timeline activity-timeline-compact">
+
+                            {% for item in recent_activity_preview %}
+
+                                <div class="activity-item type-{{ item.type }}">
+
+                                    <div class="activity-icon-dot"><i class="bi {{ item.icon }}"></i></div>
+
+                                    <a href="{{ item.url }}" class="activity-title d-block">
+                                        {{ item.title }}
+                                    </a>
+
+                                    <div class="activity-meta">
+                                        {{ item.timestamp|timesince }} ago
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-state">
+                            <i class="bi bi-clock-history"></i>
+                            No activity yet.
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-header">AI Summary <span class="text-muted fw-normal small">(This Week)</span></div>
+
+                <div class="card-body">
+
+                    <ul class="ai-summary-list">
+
+                        <li>
+                            You've uploaded <strong>{{ uploads_this_week }}</strong> new resource{{ uploads_this_week|pluralize }} this week.
+                        </li>
+
+                        <li>
+                            <strong>{{ summarized_this_week }}</strong> document{{ summarized_this_week|pluralize }} {{ summarized_this_week|pluralize:"was,were" }} summarized by AI.
+                        </li>
+
+                        {% if top_collection %}
+                            <li>
+                                Your most active collection is <strong>{{ top_collection.name }}</strong>.
+                            </li>
+                        {% endif %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-header">Quick Actions</div>
+
+                <div class="card-body">
+
+                    <div class="quick-action-grid">
+
+                        <a href="{% url 'resource_manager:upload_resource' %}" class="quick-action">
+                            <span class="quick-action-icon"><i class="bi bi-upload"></i></span>
+                            Upload Files
+                        </a>
+
+                        <a href="{% url 'resource_manager:upload_resource' %}" class="quick-action">
+                            <span class="quick-action-icon"><i class="bi bi-link-45deg"></i></span>
+                            Add Link
+                        </a>
+
+                        <a href="{% url 'resource_manager:create_collection' %}" class="quick-action">
+                            <span class="quick-action-icon"><i class="bi bi-folder-plus"></i></span>
+                            New Collection
+                        </a>
+
+                        <a href="{% url 'upload_resume' %}" class="quick-action">
+                            <span class="quick-action-icon"><i class="bi bi-file-earmark-person"></i></span>
+                            Analyze Resume
+                        </a>
+
+                    </div>
+
+                    {% if latest_analysis %}
+
+                        <hr class="my-3">
+
+                        <div class="score-mini">
+                            <div class="score-mini-ring" style="--pct: {{ latest_score }};">
+                                {{ latest_score }}
+                            </div>
+                            <div>
+                                <div class="fw-semibold" style="font-size:0.88rem;">Latest Resume Score</div>
+                                <a href="{% url 'resume_result' latest_analysis.pk %}" class="small text-decoration-none">View analysis &rarr;</a>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

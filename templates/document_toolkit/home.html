@@ -1,0 +1,100 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <div class="toolkit-header mb-4">
+        <div class="page-header-icon accent-violet"><i class="bi bi-tools"></i></div>
+        <div>
+            <h2>Document Toolkit</h2>
+            <p class="text-muted mb-0">Everything you need to create, convert, and clean up your documents.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        {% for tool in tools %}
+
+            <div class="col-md-6 col-lg-4">
+
+                <a href="{% url tool.url_name %}" class="card tool-card accent-{{ tool.accent }}">
+
+                    <div class="tool-icon"><i class="bi {{ tool.icon }}"></i></div>
+
+                    <div class="tool-title">{{ tool.title }}</div>
+                    <p class="tool-desc">{{ tool.description }}</p>
+
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- RECENT JOBS -->
+    <!-- ===================================== -->
+
+    <div class="card mt-4">
+
+        <div class="card-header">Recent Files</div>
+
+        <div class="card-body">
+
+            {% if recent_jobs %}
+
+                <div class="job-row-list">
+
+                {% for job in recent_jobs %}
+
+                    <div class="job-row">
+
+                        <div>
+                            <div class="job-tool">{{ job.get_tool_type_display }} &middot; {{ job.summary }}</div>
+                            <div class="job-meta">{{ job.created_at|timesince }} ago</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            {% if job.output_file %}
+                                <a href="{{ job.output_file.url }}" class="btn btn-outline-primary btn-sm" download>
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            {% endif %}
+
+                            <form method="post" action="{% url 'document_toolkit:delete_job' job.pk %}"
+                                  data-confirm-title="Remove from History"
+                                  data-confirm-message="Remove this file from your Document Toolkit history? This cannot be undone."
+                                  data-confirm-button-label="Remove">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+                    <i class="bi bi-clock-history"></i>
+                    No files processed yet. Pick a tool above to get started.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

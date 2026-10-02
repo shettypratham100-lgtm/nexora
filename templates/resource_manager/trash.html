@@ -1,0 +1,161 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-start mb-4">
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="page-header-icon accent-coral"><i class="bi bi-trash3"></i></div>
+            <div>
+                <h2 class="mb-0">Trash</h2>
+                <p class="text-muted mb-0">Items are permanently deleted {{ retention_days }} days after being trashed.</p>
+            </div>
+        </div>
+
+        {% if trashed_collections or trashed_resources %}
+
+            <form method="post" action="{% url 'resource_manager:empty_trash' %}"
+                  data-confirm-title="Empty Trash"
+                  data-confirm-message="Permanently delete everything in Trash? This cannot be undone."
+                  data-confirm-button-label="Empty Trash">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-trash3"></i> Empty Trash
+                </button>
+            </form>
+
+        {% endif %}
+
+    </div>
+
+    {% if not trashed_collections and not trashed_resources %}
+
+        <div class="card">
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="bi bi-trash3"></i>
+                    Trash is empty.
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+
+        {% if trashed_collections %}
+
+            <div class="card mb-4">
+
+                <div class="card-header">Collections</div>
+
+                <div class="card-body p-0">
+
+                    {% for collection in trashed_collections %}
+
+                        <div class="trash-row">
+
+                            <div class="trash-row-info">
+                                <div class="trash-row-icon"><i class="bi bi-folder-fill"></i></div>
+                                <div>
+                                    <div class="trash-row-title">{{ collection.name }}</div>
+                                    <div class="trash-row-meta">
+                                        <span class="{% if collection.days_left <= 2 %}trash-countdown-urgent{% endif %}">
+                                            Deletes in {{ collection.days_left }} day{{ collection.days_left|pluralize }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+
+                                <form method="post" action="{% url 'resource_manager:restore_collection' collection.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                    </button>
+                                </form>
+
+                                <form method="post" action="{% url 'resource_manager:permanent_delete_collection' collection.pk %}"
+                                      data-confirm-title="Delete Permanently"
+                                      data-confirm-message="Permanently delete '{{ collection.name }}' and every resource inside it? This cannot be undone."
+                                      data-confirm-button-label="Delete Permanently">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+        {% if trashed_resources %}
+
+            <div class="card">
+
+                <div class="card-header">Resources</div>
+
+                <div class="card-body p-0">
+
+                    {% for resource in trashed_resources %}
+
+                        <div class="trash-row">
+
+                            <div class="trash-row-info">
+                                <div class="trash-row-icon"><i class="bi bi-file-earmark-text"></i></div>
+                                <div>
+                                    <div class="trash-row-title">{{ resource.title }}</div>
+                                    <div class="trash-row-meta">
+                                        {{ resource.collection.name }} &middot;
+                                        <span class="{% if resource.days_left <= 2 %}trash-countdown-urgent{% endif %}">
+                                            Deletes in {{ resource.days_left }} day{{ resource.days_left|pluralize }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+
+                                <form method="post" action="{% url 'resource_manager:restore_resource' resource.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                    </button>
+                                </form>
+
+                                <form method="post" action="{% url 'resource_manager:permanent_delete_resource' resource.pk %}"
+                                      data-confirm-title="Delete Permanently"
+                                      data-confirm-message="Permanently delete '{{ resource.title }}'? This cannot be undone."
+                                      data-confirm-button-label="Delete Permanently">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

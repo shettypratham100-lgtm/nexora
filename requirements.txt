@@ -1,0 +1,36 @@
+# Nexora - Python dependencies
+#
+# This replaces the original requirements.txt, which was UTF-16
+# encoded and contained a full pip-freeze of an unrelated large
+# environment (torch, transformers, etc.) that this project
+# doesn't actually use. This file only lists what Nexora imports.
+#
+# Install with:  pip install -r requirements.txt
+
+Django==5.2.8
+
+# MySQL driver -- pure Python, no C build tools required
+# (nexora/__init__.py registers it as a MySQLdb replacement)
+PyMySQL==1.2.0
+cryptography==50.0.0
+
+# Environment variables (.env)
+python-dotenv==1.2.2
+
+# Image handling (Resource previews, Document Toolkit image-to-PDF)
+pillow==12.3.0
+
+# Gemini AI (Resume Analyzer)
+google-generativeai==0.8.6
+
+# PDF processing (previews, Document Toolkit: merge/split/rotate/
+# watermark/compress/page-numbers/create-PDF)
+pymupdf==1.28.2
+
+# Office document handling
+python-docx==1.2.0
+python-pptx==1.0.2
+
+# Spreadsheet / tabular data support (some resource/document flows)
+pandas==3.0.5
+openpyxl==3.1.5

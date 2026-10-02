@@ -1,0 +1,168 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg app-navbar shadow-sm">
+
+    <div class="container-fluid">
+
+        <!-- ===================================================== -->
+        <!-- SIDEBAR TOGGLE (mobile/desktop collapse) -->
+        <!-- ===================================================== -->
+
+        {% if user.is_authenticated %}
+
+            <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle sidebar">
+                <i class="bi bi-list"></i>
+            </button>
+
+        {% endif %}
+
+        <!-- ===================================================== -->
+        <!-- LOGO -->
+        <!-- ===================================================== -->
+
+        <a class="navbar-brand fw-bold" href="{% url 'dashboard:dashboard' %}">
+
+            <img src="{% static 'images/logo.png' %}" alt="Nexora">
+            Nexora
+
+        </a>
+
+        <!-- ===================================================== -->
+        <!-- MOBILE TOGGLER -->
+        <!-- ===================================================== -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarContent">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <!-- ===================================================== -->
+        <!-- NAVBAR CONTENT -->
+        <!-- ===================================================== -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarContent">
+
+            <!-- ===================================================== -->
+            <!-- GLOBAL RESOURCE SEARCH -->
+            <!-- ===================================================== -->
+
+            {% if user.is_authenticated %}
+
+            <form
+                class="d-flex flex-grow-1 mx-lg-4"
+                method="GET"
+                action="{% url 'resource_manager:search_resources' %}">
+
+                <!-- ======================================= -->
+                <!-- SEARCH WRAPPER -->
+                <!-- ======================================= -->
+
+                <div class="search-wrapper">
+
+                    <input
+                        id="globalSearch"
+                        class="form-control"
+                        type="search"
+                        name="q"
+                        placeholder="Search anything in Nexora..."
+                        autocomplete="off"
+                        value="{{ request.GET.q|default:'' }}"
+                    >
+
+                    <!-- Floating Panel -->
+                    <div id="liveSearchPanel"></div>
+
+                    <!-- Recent searches, rendered server-side, cloned into
+                         the panel by JS on focus (see resource_manager.js) -->
+                    <template id="recentSearchesTemplate">
+
+                        <div class="live-search-header">Recent Searches</div>
+
+                        {% if recent_searches %}
+
+                            {% for search in recent_searches %}
+
+                                <div class="recent-search-item" data-query="{{ search.query }}">
+                                    <i class="bi bi-clock-history"></i>
+                                    {{ search.query }}
+                                </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="recent-search-item text-muted" style="cursor:default;">
+                                No recent searches yet
+                            </div>
+
+                        {% endif %}
+
+                    </template>
+
+                </div>
+
+            </form>
+
+            {% endif %}
+
+            <!-- Right Side -->
+
+            <ul class="navbar-nav ms-auto align-items-lg-center flex-row gap-2">
+
+                {% if user.is_authenticated %}
+
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <button class="navbar-avatar dropdown-toggle" type="button" data-bs-toggle="dropdown" style="border:none;">
+                                {{ user.username|slice:":1"|upper }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text small text-muted">{{ user.email }}</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                {% else %}
+
+                    <li class="nav-item me-2">
+
+                        <a
+                            class="btn btn-outline-light btn-sm"
+                            href="{% url 'accounts:login' %}">
+
+                            Login
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="btn btn-light btn-sm"
+                            href="{% url 'accounts:register' %}">
+
+                            Register
+
+                        </a>
+
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>

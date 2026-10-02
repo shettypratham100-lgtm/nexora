@@ -1,0 +1,611 @@
+/* ==========================================================
+   RESUME ANALYZER CSS
+   ========================================================== */
+
+
+/* ==========================================================
+   MAIN PAGE
+   ========================================================== */
+
+.resume-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
+.resume-header {
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--amber-100), var(--bg-surface) 70%);
+    border: 1px solid var(--border-soft);
+}
+
+.resume-header h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.resume-header p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+
+/* ==========================================================
+   MAIN CARDS
+   ========================================================== */
+
+.resume-card {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-card);
+
+    padding: 28px;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.resume-card-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+
+/* ==========================================================
+   SCORE CARDS
+   ========================================================== */
+
+.score-card {
+    min-height: 220px;
+    border-left: 4px solid var(--border-soft);
+}
+
+/* Color-coded by tier so a bad score visually reads as bad --
+   previously every score card looked identical (teal) whether
+   the score was 95 or 15. */
+.score-card.score-tier-excellent { border-left-color: var(--teal-500); }
+.score-card.score-tier-good      { border-left-color: var(--blue-500); }
+.score-card.score-tier-warn      { border-left-color: var(--amber-500); }
+.score-card.score-tier-bad       { border-left-color: var(--coral-500); }
+
+.score-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.score-label {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.score-number {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.score-number span {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 26px;
+}
+
+.score-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    margin-top: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--teal-100);
+    color: var(--teal-500);
+}
+
+/* Match the badge color to the score tier set on the parent
+   .score-card, instead of always showing teal. */
+.score-tier-excellent .score-status { background: var(--teal-100);  color: var(--teal-500); }
+.score-tier-good      .score-status { background: var(--blue-100);  color: var(--blue-500); }
+.score-tier-warn      .score-status { background: var(--amber-100); color: var(--amber-500); }
+.score-tier-bad       .score-status { background: var(--coral-100); color: var(--coral-500); }
+
+/* ==========================================================
+   RESUME HISTORY
+   ========================================================== */
+
+.history-row-list {
+    max-height: 560px;
+    overflow-y: auto;
+}
+
+.history-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-soft);
+    transition: background 0.12s ease;
+}
+
+.history-row:last-child { border-bottom: none; }
+
+.history-row:hover { background: var(--bg-canvas); }
+
+.history-row-score {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.history-row-score.score-tier-excellent { background: var(--teal-100);  color: var(--teal-500); }
+.history-row-score.score-tier-good      { background: var(--blue-100);  color: var(--blue-500); }
+.history-row-score.score-tier-warn      { background: var(--amber-100); color: var(--amber-500); }
+.history-row-score.score-tier-bad       { background: var(--coral-100); color: var(--coral-500); }
+
+.history-row-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.history-row-title {
+    font-weight: 600;
+    font-size: 0.94rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.history-row-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
+}
+
+.history-delta {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 0.05em 0.5em 0.05em 0.15em;
+    border-radius: 999px;
+}
+
+.history-delta.delta-up   { background: var(--teal-100);   color: var(--teal-500); }
+.history-delta.delta-down { background: var(--coral-100);  color: var(--coral-500); }
+.history-delta.delta-flat { background: var(--border-soft); color: var(--text-muted); }
+
+.history-row-actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+
+/* ==========================================================
+   SCORE EXPLANATION
+   ========================================================== */
+
+.score-reason {
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    margin-top: 18px;
+
+    margin-bottom: 0;
+}
+
+
+/* ==========================================================
+   ATS SCORE RING
+   ========================================================== */
+
+.score-ring {
+    width: 125px;
+    height: 125px;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            var(--ring-color, var(--teal-500)) var(--score, 0%),
+            var(--border-soft) 0
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.score-tier-excellent .score-ring { --ring-color: var(--teal-500); }
+.score-tier-good      .score-ring { --ring-color: var(--blue-500); }
+.score-tier-warn      .score-ring { --ring-color: var(--amber-500); }
+.score-tier-bad       .score-ring { --ring-color: var(--coral-500); }
+
+.score-ring-inner {
+    width: 92px;
+    height: 92px;
+
+    border-radius: 50%;
+
+    background: var(--bg-surface);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--text-primary);
+}
+
+
+/* ==========================================================
+   INFORMATION CARDS
+   ========================================================== */
+
+.info-card {
+    height: 100%;
+}
+
+
+/* ==========================================================
+   LIST
+   ========================================================== */
+
+.section-list {
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+}
+
+.section-list li {
+    display: flex;
+
+    align-items: flex-start;
+
+    margin-bottom: 14px;
+
+    line-height: 1.5;
+}
+
+.section-list li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================================
+   LIST ICONS
+   ========================================================== */
+
+.check-icon {
+    color: var(--teal-500);
+
+    font-weight: 700;
+
+    font-size: 16px;
+
+    flex-shrink: 0;
+
+    margin-right: 10px;
+
+    line-height: 1.5;
+}
+
+.improvement-icon {
+    color: var(--amber-500);
+
+    font-weight: 700;
+
+    font-size: 16px;
+
+    flex-shrink: 0;
+
+    margin-right: 10px;
+
+    line-height: 1.5;
+}
+
+.weakness-icon {
+    color: var(--coral-500);
+
+    font-weight: 700;
+
+    font-size: 16px;
+
+    flex-shrink: 0;
+
+    margin-right: 10px;
+
+    line-height: 1.5;
+}
+
+/* ==========================================================
+   IMPROVEMENTS -- PRIORITY BADGES
+   ========================================================== */
+
+.improvements-list li {
+    align-items: center;
+}
+
+.priority-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.3em 0.7em;
+    border-radius: 999px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.priority-badge.priority-high   { background: var(--coral-100); color: var(--coral-500); }
+.priority-badge.priority-medium { background: var(--amber-100); color: var(--amber-500); }
+.priority-badge.priority-low    { background: var(--blue-100);  color: var(--blue-500); }
+
+
+/* ==========================================================
+   EMPTY STATE
+   ========================================================== */
+
+.empty-message {
+    color: var(--text-secondary);
+
+    margin: 0;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 767px) {
+
+    .resume-page {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .score-content {
+        align-items: flex-start;
+    }
+
+    .score-ring {
+        width: 95px;
+        height: 95px;
+    }
+
+    .score-ring-inner {
+        width: 70px;
+        height: 70px;
+    }
+
+    .score-number {
+        font-size: 34px;
+    }
+
+    .score-number span {
+        font-size: 22px;
+    }
+
+    .resume-card {
+        padding: 22px;
+    }
+
+}
+/* ============================================================
+   RESUME UPLOAD -- DROPZONE + STEP PROGRESS
+   ============================================================ */
+
+.resume-upload-card,
+.resume-progress-card {
+    max-width: 640px;
+    margin: 2rem auto 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* ---------- Subtle decorative background ----------
+   Faint blurred color washes behind the card so the page
+   doesn't read as flat empty white space -- kept light enough
+   to stay out of the way of the actual form. */
+
+.resume-upload-page {
+    position: relative;
+    isolation: isolate;
+    padding-bottom: 3rem;
+}
+
+.resume-upload-page::before,
+.resume-upload-page::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.22;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.resume-upload-page::before {
+    top: -60px;
+    left: 8%;
+    background: radial-gradient(circle, var(--amber-500), transparent 70%);
+}
+
+.resume-upload-page::after {
+    top: 120px;
+    right: 8%;
+    background: radial-gradient(circle, var(--violet-500), transparent 70%);
+}
+
+/* ---------- Step list ---------- */
+
+.resume-step-list {
+    position: relative;
+    padding-left: 2.4rem;
+}
+
+.resume-step-list::before {
+    content: "";
+    position: absolute;
+    left: 0.95rem;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: 2px;
+    background: var(--border-soft);
+}
+
+.resume-step {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1.6rem;
+    opacity: 0.45;
+    transition: opacity 0.25s ease;
+}
+
+.resume-step:last-child { padding-bottom: 0; }
+
+.resume-step.active,
+.resume-step.done {
+    opacity: 1;
+}
+
+.resume-step-marker {
+    position: absolute;
+    left: -2.4rem;
+    top: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 2px solid var(--border-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: transparent;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+}
+
+.resume-step.active .resume-step-marker {
+    border-color: var(--violet-500);
+    background: var(--violet-100);
+    animation: resumeStepPulse 1.4s ease-in-out infinite;
+}
+
+.resume-step.done .resume-step-marker {
+    border-color: var(--teal-500);
+    background: var(--teal-500);
+    color: #fff;
+}
+
+@keyframes resumeStepPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.25); }
+    50% { box-shadow: 0 0 0 6px rgba(108, 92, 231, 0.1); }
+}
+
+.resume-step-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.resume-step-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+}
+
+.resume-step.active .resume-step-title {
+    color: var(--violet-600);
+}
+
+/* ---------- Real upload progress bar (step 1) ---------- */
+
+.resume-upload-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--border-soft);
+    overflow: hidden;
+    width: 160px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+.resume-upload-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--violet-600);
+    border-radius: 999px;
+    transition: width 0.15s ease;
+}
+
+/* ==========================================================
+   AI DISCLAIMER
+   ========================================================== */
+
+.ai-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--violet-100);
+    border-left: 3px solid var(--violet-600);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1.1rem;
+    font-size: 0.86rem;
+    color: var(--ink-800);
+    line-height: 1.5;
+}
+
+.ai-disclaimer i {
+    color: var(--violet-600);
+    font-size: 1.05rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}

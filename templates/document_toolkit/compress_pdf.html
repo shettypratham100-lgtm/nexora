@@ -1,0 +1,26 @@
+{% extends "document_toolkit/toolkit_base.html" %}
+
+{% block tool_form %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label class="file-dropzone mb-3">
+        <input type="file" name="file" accept="application/pdf" required>
+        <i class="bi bi-cloud-upload"></i>
+        <div class="dropzone-title">Click or drag a PDF here</div>
+        <div class="dropzone-hint">Select the PDF you want to compress</div>
+    </label>
+
+    <div class="mb-3">
+        <label class="form-label">Compression level</label>
+        {{ form.image_quality }}
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-file-earmark-zip"></i> Compress PDF
+    </button>
+
+</form>
+
+{% endblock %}

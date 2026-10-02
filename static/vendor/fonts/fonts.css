@@ -1,0 +1,66 @@
+/* Self-hosted Sora + Inter (replaces the Google Fonts CDN link) */
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url(./inter/inter-latin-400-normal.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 500;
+    src: url(./inter/inter-latin-500-normal.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 600;
+    src: url(./inter/inter-latin-600-normal.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: url(./inter/inter-latin-700-normal.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url(./sora/sora-latin-400-normal.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 500;
+    src: url(./sora/sora-latin-500-normal.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 600;
+    src: url(./sora/sora-latin-600-normal.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: url(./sora/sora-latin-700-normal.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Sora';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 800;
+    src: url(./sora/sora-latin-800-normal.woff2) format('woff2');
+}

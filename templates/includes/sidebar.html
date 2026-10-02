@@ -1,0 +1,139 @@
+{% load static %}
+
+<div class="app-sidebar vh-100 sidebar-shell">
+
+    <!-- ===================================== -->
+    <!-- MAIN NAV -->
+    <!-- ===================================== -->
+
+    <ul class="nav flex-column p-3 pb-0 pt-4">
+
+        <li class="nav-item mb-1">
+            <a href="{% url 'dashboard:dashboard' %}"
+               class="nav-link {% if request.resolver_match.app_name == 'dashboard' and request.resolver_match.url_name == 'dashboard' %}active-sidebar{% else %} {% endif %}">
+                <i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item mb-1">
+            <a href="{% url 'resource_manager:collection_list' %}"
+               class="nav-link {% if request.resolver_match.app_name == 'resource_manager' and request.resolver_match.url_name in 'collection_list,collection_detail,create_collection,edit_collection,view_resource,upload_resource,collection_upload,edit_resource,search_resources' %}active-sidebar{% else %} {% endif %}">
+                <i class="bi bi-folder-fill"></i> <span>Resource Manager</span>
+            </a>
+        </li>
+
+        <li class="nav-item mb-1">
+            <a href="{% url 'upload_resume' %}"
+               class="nav-link {% if '/resume/' in request.path %}active-sidebar{% else %} {% endif %}">
+                <i class="bi bi-file-earmark-person-fill"></i> <span>Resume Analyzer</span>
+            </a>
+        </li>
+
+        <li class="nav-item mb-1">
+            <a href="{% url 'document_toolkit:home' %}"
+               class="nav-link {% if request.resolver_match.app_name == 'document_toolkit' %}active-sidebar{% else %} {% endif %}">
+                <i class="bi bi-tools"></i> <span>Document Toolkit</span>
+            </a>
+        </li>
+
+    </ul>
+
+    <!-- ===================================== -->
+    <!-- QUICK LINKS -->
+    <!-- ===================================== -->
+
+    <div class="px-3 mt-2">
+        <div class="sidebar-section-label">Quick Links</div>
+    </div>
+
+    <ul class="nav flex-column px-3 pb-2">
+
+        <li class="nav-item mb-1">
+            <a href="{% url 'dashboard:recent_activity' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'recent_activity' %}active-sidebar{% else %} {% endif %}">
+                <i class="bi bi-clock-history"></i> <span>Recent Activity</span>
+            </a>
+        </li>
+
+        <li class="nav-item mb-1">
+            <a href="{% url 'resource_manager:starred' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'starred' %}active-sidebar{% else %} {% endif %}">
+                <i class="bi bi-star-fill"></i> <span>Starred</span>
+            </a>
+        </li>
+
+        <li class="nav-item mb-1">
+            <a href="{% url 'resource_manager:trash' %}"
+               class="nav-link {% if request.resolver_match.url_name == 'trash' %}active-sidebar{% else %} {% endif %}">
+                <i class="bi bi-trash3-fill"></i> <span>Trash</span>
+            </a>
+        </li>
+
+    </ul>
+
+    <!-- ===================================== -->
+    <!-- SPACER -->
+    <!-- ===================================== -->
+
+    <div class="sidebar-spacer"></div>
+
+    <!-- ===================================== -->
+    <!-- STORAGE WIDGET -->
+    <!-- ===================================== -->
+
+    {% if sidebar_storage %}
+
+        <div class="px-3 mb-3">
+
+            <div class="storage-widget
+                {% if sidebar_storage.percent_used >= 90 %}storage-widget-critical
+                {% elif sidebar_storage.percent_used >= 70 %}storage-widget-warn
+                {% endif %}">
+
+                <div class="storage-widget-icon"><i class="bi bi-hdd-stack-fill"></i></div>
+
+                <div class="storage-widget-body">
+
+                    <div class="storage-widget-top">
+                        <span>Storage</span>
+                        <span class="storage-widget-pct">{{ sidebar_storage.percent_used }}%</span>
+                    </div>
+
+                    <div class="storage-widget-bar">
+                        <div class="storage-widget-fill" style="width: {{ sidebar_storage.percent_used }}%;"></div>
+                    </div>
+
+                    <div class="storage-widget-sub">{{ sidebar_storage.used_gb }} GB of {{ sidebar_storage.limit_gb }} GB used</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+    <!-- ===================================== -->
+    <!-- USER PROFILE FOOTER -->
+    <!-- ===================================== -->
+
+    <div class="sidebar-user-footer px-3 py-3 border-top">
+
+        <div class="d-flex align-items-center gap-2">
+
+            <div class="sidebar-avatar">{{ user.username|slice:":1"|upper }}</div>
+
+            <div class="flex-grow-1 min-w-0">
+                <div class="sidebar-user-name">{{ user.get_full_name|default:user.username }}</div>
+                <div class="sidebar-user-email">{{ user.email }}</div>
+            </div>
+
+            <a href="{% url 'accounts:logout' %}" class="sidebar-logout-icon" title="Logout">
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

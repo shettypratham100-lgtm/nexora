@@ -1,0 +1,21 @@
+{% extends "document_toolkit/toolkit_base.html" %}
+
+{% block tool_form %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label class="file-dropzone mb-3">
+        <input type="file" name="file" accept=".doc,.docx" required>
+        <i class="bi bi-cloud-upload"></i>
+        <div class="dropzone-title">Click or drag a Word document here</div>
+        <div class="dropzone-hint">.doc or .docx files</div>
+    </label>
+
+    <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-file-earmark-pdf"></i> Convert to PDF
+    </button>
+
+</form>
+
+{% endblock %}

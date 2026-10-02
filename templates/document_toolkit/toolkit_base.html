@@ -1,0 +1,105 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <script src="{% static 'js/document_toolkit.js' %}"></script>
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <div class="mb-3">
+        <a href="{% url 'document_toolkit:home' %}" class="toolkit-back-link text-decoration-none">
+            <i class="bi bi-arrow-left"></i> Back to Document Toolkit
+        </a>
+    </div>
+
+    <div class="tool-page-header accent-{{ tool_accent|default:'violet' }}">
+
+        <div class="tool-icon"><i class="bi {{ tool_icon }}"></i></div>
+
+        <div>
+            <h2>{{ tool_title }}</h2>
+            <p>{{ tool_description }}</p>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-7">
+
+            <div class="card">
+                <div class="card-body">
+
+                    {% block tool_form %}
+                    {% endblock %}
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-5">
+
+            {% if job_stack %}
+
+                <div class="tool-result-stack">
+
+                    {% for result_job in job_stack %}
+
+                        <div class="tool-result {% if forloop.first %}is-latest{% endif %}">
+
+                            {% if forloop.first %}
+                                <div class="result-new-badge"><i class="bi bi-stars"></i> New result</div>
+                            {% endif %}
+
+                            <div class="result-info">
+
+                                <div class="result-icon"><i class="bi bi-check-circle-fill"></i></div>
+
+                                <div>
+                                    <div class="result-title">
+                                        Done!
+                                        {% if not forloop.first %}
+                                            <span class="result-ago">{{ result_job.created_at|timesince }} ago</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="result-meta">{{ result_job.summary }}</div>
+                                </div>
+
+                            </div>
+
+                            <a href="{{ result_job.output_file.url }}" class="btn btn-success btn-sm" download>
+                                <i class="bi bi-download"></i> Download
+                            </a>
+
+                        </div>
+
+                    {% endfor %}
+
+                    {% if job_stack|length > 1 %}
+                        <div class="tool-result-stack-hint">
+                            <i class="bi bi-clock-history"></i> Showing your last {{ job_stack|length }} results from this session.
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+                    <i class="bi bi-arrow-left-circle"></i>
+                    Your result will appear here once processed.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

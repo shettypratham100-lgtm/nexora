@@ -1,0 +1,163 @@
+{% extends "document_toolkit/toolkit_base.html" %}
+
+{% block tool_form %}
+
+<form method="post" enctype="multipart/form-data" id="mergeForm">
+    {% csrf_token %}
+
+    <label class="file-dropzone mb-2" id="dropzone">
+        <input type="file" id="fileInput" accept="application/pdf,image/jpeg,image/png,image/webp,image/bmp,image/tiff" multiple>
+        <i class="bi bi-cloud-upload"></i>
+        <div class="dropzone-title">Click or drag PDFs and images here</div>
+        <div class="dropzone-hint">Mix PDFs and images freely &mdash; drag the list below to set the final order</div>
+    </label>
+
+    <div class="merge-file-list" id="fileList">
+        <div class="merge-file-empty" id="emptyMessage">No files selected yet.</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 mt-3" id="mergeBtn" disabled>
+        <i class="bi bi-union"></i> Merge Files
+    </button>
+
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const dropzoneInput = document.getElementById("fileInput");
+    const fileList = document.getElementById("fileList");
+    const emptyMessage = document.getElementById("emptyMessage");
+    const mergeBtn = document.getElementById("mergeBtn");
+    const mergeForm = document.getElementById("mergeForm");
+
+    let selectedFiles = [];
+
+    function isImage(file) {
+        return /\.(jpe?g|png|webp|bmp|tiff?)$/i.test(file.name);
+    }
+
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    dropzoneInput.addEventListener("change", function () {
+
+        Array.from(dropzoneInput.files).forEach(function (file) {
+            const exists = selectedFiles.some(f =>
+                f.name === file.name && f.size === file.size && f.lastModified === file.lastModified
+            );
+            if (!exists) selectedFiles.push(file);
+        });
+
+        dropzoneInput.value = "";
+        render();
+
+    });
+
+    function render() {
+
+        fileList.innerHTML = "";
+
+        if (!selectedFiles.length) {
+            fileList.appendChild(emptyMessage);
+            mergeBtn.disabled = true;
+            return;
+        }
+
+        mergeBtn.disabled = selectedFiles.length < 2;
+
+        selectedFiles.forEach(function (file, index) {
+
+            const item = document.createElement("div");
+            item.className = "merge-file-item";
+            item.draggable = true;
+            item.dataset.index = index;
+
+            const iconWrap = document.createElement("div");
+            iconWrap.className = "merge-file-icon " + (isImage(file) ? "type-image" : "type-pdf");
+            iconWrap.innerHTML = isImage(file) ? '<i class="bi bi-file-earmark-image"></i>' : '<i class="bi bi-file-earmark-pdf"></i>';
+
+            const info = document.createElement("div");
+            info.className = "merge-file-info";
+            info.innerHTML =
+                '<div class="merge-file-name">' + file.name + '</div>' +
+                '<div class="merge-file-size">' + formatSize(file.size) + '</div>';
+
+            const dragHandle = document.createElement("div");
+            dragHandle.className = "merge-drag-handle";
+            dragHandle.innerHTML = '<i class="bi bi-grip-vertical"></i>';
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "merge-remove";
+            removeBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
+            removeBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                selectedFiles.splice(index, 1);
+                render();
+            });
+
+            item.appendChild(iconWrap);
+            item.appendChild(info);
+            item.appendChild(dragHandle);
+            item.appendChild(removeBtn);
+
+            item.addEventListener("dragstart", function (e) {
+                e.dataTransfer.effectAllowed = "move";
+                e.dataTransfer.setData("text/plain", String(index));
+                item.classList.add("dragging");
+            });
+
+            item.addEventListener("dragend", function () {
+                item.classList.remove("dragging");
+            });
+
+            item.addEventListener("dragover", function (e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+            });
+
+            item.addEventListener("drop", function (e) {
+                e.preventDefault();
+                const fromIndex = parseInt(e.dataTransfer.getData("text/plain"), 10);
+                const toIndex = index;
+                if (Number.isNaN(fromIndex) || fromIndex === toIndex) return;
+
+                const moved = selectedFiles.splice(fromIndex, 1)[0];
+                const newIndex = fromIndex < toIndex ? toIndex - 1 : toIndex;
+                selectedFiles.splice(newIndex, 0, moved);
+                render();
+            });
+
+            fileList.appendChild(item);
+
+        });
+
+    }
+
+    // On submit, sync the reordered/curated file list back into a
+    // real <input type="file"> using DataTransfer, then let the
+    // normal Django form POST proceed as usual.
+    mergeForm.addEventListener("submit", function (event) {
+
+        if (selectedFiles.length < 2) {
+            event.preventDefault();
+            return;
+        }
+
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        dropzoneInput.files = dt.files;
+        dropzoneInput.name = "files";
+
+    });
+
+    render();
+
+});
+</script>
+
+{% endblock %}

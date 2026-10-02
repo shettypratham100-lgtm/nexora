@@ -1,0 +1,396 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<!-- ===================================================== -->
+<!-- COLLECTION DETAIL PAGE -->
+<!-- ===================================================== -->
+<!--
+    This page displays detailed information about
+    a single collection selected by the user.
+
+    Future Enhancements:
+    • Display all resources inside the collection
+    • Upload new resources
+    • Search resources
+    • AI Summary & Keywords
+-->
+<!-- ===================================================== -->
+
+<div class="container py-4">
+
+    <!-- ============================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ============================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="page-header-icon accent-teal"><i class="bi bi-folder-fill"></i></div>
+
+            <div>
+
+                <h2 class="mb-0">{{ collection.name }}</h2>
+
+                <p class="text-muted mb-0">
+
+                    {{ collection.description|default:"No description available." }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Back Button -->
+        <a
+            href="{% url 'resource_manager:collection_list' %}"
+            class="btn btn-secondary"
+        >
+            ← Back to Collections
+        </a>
+
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- COLLECTION INFORMATION CARD -->
+    <!-- ============================================== -->
+
+    <div class="card shadow-sm mb-4">
+
+        <!-- Card Header -->
+        <div class="card-header">
+
+            <h5 class="mb-0">
+
+                Collection Information
+
+            </h5>
+
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body">
+
+            <!-- Collection Name -->
+            <p>
+
+                <strong>Name :</strong>
+
+                {{ collection.name }}
+
+            </p>
+
+            <!-- Collection Description -->
+            <p>
+
+                <strong>Description :</strong>
+
+                {{ collection.description|default:"-" }}
+
+            </p>
+
+            <!-- Collection Creation Date -->
+            <p>
+
+                <strong>Created On :</strong>
+
+                {{ collection.created_at|date:"d M Y" }}
+
+            </p>
+
+            <!-- Last Updated Date -->
+            <p>
+
+                <strong>Last Updated :</strong>
+
+                {{ collection.updated_at|date:"d M Y" }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- RESOURCES SECTION -->
+    <!-- ============================================== -->
+    <!--
+        Currently this is only a placeholder.
+
+        Later this section will display:
+
+        • PDFs
+        • Word Documents
+        • PPTs
+        • Images
+        • YouTube Links
+        • Website Links
+        • Google Drive Links
+    -->
+
+    <div class="card shadow-sm">
+
+        <!-- Card Header -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+
+                Resources
+
+            </h5>
+
+            <a
+                href="{% url 'resource_manager:collection_upload' collection.pk %}"
+                class="btn btn-primary btn-sm"
+            >
+                + Add Resource
+            </a>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- RESOURCE LIST -->
+        <!-- ================================================= -->
+        <!--
+            Display all resources belonging to the current
+            collection.
+
+            If no resources exist, display an empty state.
+        -->
+
+        <div class="card-body">
+
+            <!-- ================================================= -->
+            <!-- CHECK WHETHER THE COLLECTION CONTAINS RESOURCES -->
+            <!-- ================================================= -->
+            <!--
+                If resources exist, display each one as a card.
+
+                Otherwise, display an empty state encouraging
+                the user to upload resources.
+            -->
+
+            {% if resources %}
+
+                <!-- ============================================= -->
+                <!-- LOOP THROUGH ALL RESOURCES -->
+                <!-- ============================================= -->
+
+                {% for resource in resources %}
+
+                <!-- ========================================= -->
+                <!-- RESOURCE CARD -->
+                <!-- ========================================= -->
+
+                <div class="card mb-3">
+
+                    <div class="card-body">
+
+                        <div class="row align-items-center">
+
+                            <!-- ================================= -->
+                            <!-- RESOURCE DETAILS -->
+                            <!-- ================================= -->
+                            <!--
+                                resource-preview
+                                    Used by JavaScript to enable
+                                    the AI hover preview.
+
+                                data-resource-id
+                                    Stores the resource ID so the
+                                    JavaScript can request:
+
+                                    /resources/preview/<id>/
+
+                                    without reloading the page.
+                            -->
+
+                            <div
+                                class="col-md-6"
+                            >
+
+                                <!-- Resource Title -->
+
+                                <h5
+                                    class="mb-1 resource-preview"
+                                    data-resource-id="{{ resource.id }}"
+                                    style="
+                                        display:inline-block;
+                                        cursor:pointer;
+                                    "
+                                >
+
+                                    {{ resource.title }}
+                                    <i class="bi bi-info-circle ms-1" style="font-size: 0.95rem;"></i>
+
+                                </h5>
+
+                                <!-- Resource Description -->
+
+                                <p class="text-muted mb-2">
+
+                                    {{ resource.description|default:"No description available." }}
+
+                                </p>
+
+                                <!-- Resource Type -->
+
+                                <span class="badge bg-primary">
+
+                                    {{ resource.get_resource_type_display }}
+
+                                </span>
+
+                            </div>
+
+                            <!-- ================================= -->
+                            <!-- RESOURCE INFORMATION -->
+                            <!-- ================================= -->
+
+                            <div class="col-md-2">
+
+                                <small class="text-muted">
+
+                                    Uploaded
+
+                                    <br>
+
+                                    {{ resource.created_at|date:"d M Y" }}
+
+                                </small>
+
+                            </div>
+
+                            <!-- ================================= -->
+                            <!-- ACTION BUTTONS -->
+                            <!-- ================================= -->
+
+                            <div class="col-md-4 text-end">
+
+                                <div class="d-flex justify-content-end align-items-center gap-2 flex-nowrap">
+
+                                <!-- Star Toggle -->
+
+                                <form method="post" action="{% url 'resource_manager:toggle_star_resource' resource.pk %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-star" title="{% if resource.is_starred %}Unstar{% else %}Star{% endif %}">
+                                        {% if resource.is_starred %}
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        {% else %}
+                                            <i class="bi bi-star"></i>
+                                        {% endif %}
+                                    </button>
+                                </form>
+
+                                <!-- ============================= -->
+                                <!-- EXTERNAL RESOURCE -->
+                                <!-- ============================= -->
+                                <!--
+                                    Website
+                                    YouTube
+                                    Google Drive
+
+                                    Open in a new browser tab.
+                                -->
+
+                                {% if resource.external_url %}
+
+                                    <a
+                                        href="{{ resource.external_url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-sm btn-outline-primary"
+                                    >
+
+                                        Open
+
+                                    </a>
+
+                                <!-- ============================= -->
+                                <!-- UPLOADED FILE -->
+                                <!-- ============================= -->
+                                <!--
+                                    PDFs
+                                    PPTs
+                                    DOCX
+                                    Images
+                                -->
+
+                                {% else %}
+
+                                    <a
+                                        href="{% url 'resource_manager:view_resource' resource.id %}"
+                                        class="btn btn-sm btn-outline-primary"
+                                    >
+
+                                        View
+
+                                    </a>
+
+                                {% endif %}
+
+                                <!-- Edit Resource -->
+
+                                <a
+                                    href="{% url 'resource_manager:edit_resource' resource.pk %}"
+                                    class="btn btn-outline-warning btn-sm"
+                                >
+                                    Edit
+                                </a>
+
+                                <!-- Delete Resource -->
+
+                                <a
+                                    href="{% url 'resource_manager:delete_resource' resource.pk %}"
+                                    class="btn btn-sm btn-outline-danger"
+                                >
+                                    Delete
+                                </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <!-- ========================================= -->
+                <!-- EMPTY STATE -->
+                <!-- ========================================= -->
+
+                <div class="text-center py-5">
+
+                    <h5>
+
+                        No Resources Found
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        This collection doesn't contain any resources yet.
+
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

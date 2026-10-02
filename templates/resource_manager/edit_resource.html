@@ -1,0 +1,259 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block title %}
+Edit Resource
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- ================================================= -->
+<!-- EDIT RESOURCE PAGE -->
+<!-- ================================================= -->
+<!--
+    This page allows users to update an existing
+    resource.
+
+    Existing values are automatically populated
+    using the ResourceForm instance.
+
+    Users can:
+    - Update resource information
+    - Replace an uploaded file
+    - Change the external URL
+-->
+
+<div class="container-fluid">
+
+    <!-- ================================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ================================================= -->
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+
+        <div class="page-header-icon accent-violet"><i class="bi bi-pencil-square"></i></div>
+
+        <div>
+
+            <h2 class="mb-0">Edit Resource</h2>
+
+            <p class="text-muted mb-0">
+                Update your resource details.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- RESOURCE EDIT FORM CARD -->
+    <!-- ================================================= -->
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+
+                <!-- ================================================= -->
+                <!-- COLLECTION FIELD -->
+                <!-- ================================================= -->
+                <!--
+                    Display the collection dropdown only when
+                    the resource is not being edited from a
+                    specific collection.
+                -->
+
+                {% if not collection %}
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Collection
+                    </label>
+
+                    {{ form.collection }}
+
+                    {% for error in form.collection.errors %}
+                        <div class="text-danger small">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+                <!-- ================================================= -->
+                <!-- RESOURCE TYPE FIELD -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Resource Type
+                    </label>
+
+                    {{ form.resource_type }}
+
+                    {% for error in form.resource_type.errors %}
+                        <div class="text-danger small">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- ================================================= -->
+                <!-- RESOURCE TITLE -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Title
+                    </label>
+
+                    {{ form.title }}
+
+                    {% for error in form.title.errors %}
+                        <div class="text-danger small">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- ================================================= -->
+                <!-- RESOURCE DESCRIPTION -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    {% for error in form.description.errors %}
+                        <div class="text-danger small">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- ================================================= -->
+                <!-- CURRENT FILE -->
+                <!-- ================================================= -->
+                <!--
+                    If a file has already been uploaded,
+                    display it so the user knows which file
+                    is currently attached.
+                -->
+
+                {% if resource.file %}
+
+                <div class="alert alert-info">
+
+                    <strong>Current File:</strong>
+
+                    <a href="{{ resource.file.url }}" target="_blank">
+
+                        {{ resource.file.name }}
+
+                    </a>
+
+                </div>
+
+                {% endif %}
+
+                <!-- ================================================= -->
+                <!-- FILE UPLOAD -->
+                <!-- ================================================= -->
+                <!--
+                    Users can upload another file to replace
+                    the existing one.
+                -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Replace File (Optional)
+                    </label>
+
+                    {{ form.file }}
+
+                    {% for error in form.file.errors %}
+                        <div class="text-danger small">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- ================================================= -->
+                <!-- EXTERNAL URL -->
+                <!-- ================================================= -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        External URL
+                    </label>
+
+                    {{ form.external_url }}
+
+                    {% for error in form.external_url.errors %}
+                        <div class="text-danger small">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <!-- ================================================= -->
+                <!-- ACTION BUTTONS -->
+                <!-- ================================================= -->
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a
+                        href="{% url 'resource_manager:collection_detail' resource.collection.pk %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-success"
+                    >
+                        <i class="bi bi-check-lg"></i> Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

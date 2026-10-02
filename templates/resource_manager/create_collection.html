@@ -1,0 +1,150 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block title %}
+Create Collection
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- ===================================================== -->
+<!-- CREATE COLLECTION PAGE -->
+<!-- ===================================================== -->
+<!--
+    This page allows users to create a new collection
+    for organizing their study resources.
+
+    Examples:
+    • Semester 5
+    • Python
+    • Artificial Intelligence
+    • Placement Preparation
+-->
+<!-- ===================================================== -->
+
+<div class="container py-4">
+
+    <!-- ============================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ============================================== -->
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+
+        <div class="page-header-icon accent-teal"><i class="bi bi-folder-plus"></i></div>
+
+        <div>
+
+            <h2 class="mb-0">Create Collection</h2>
+
+            <p class="text-muted mb-0">
+
+                Create a new collection to organize your resources.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================== -->
+    <!-- CREATE COLLECTION FORM -->
+    <!-- ============================================== -->
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- ====================================== -->
+                <!-- COLLECTION NAME -->
+                <!-- ====================================== -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Collection Name
+
+                    </label>
+
+                    {{ form.name }}
+
+                    {% for error in form.name.errors %}
+
+                        <div class="text-danger small">
+
+                            {{ error }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- ====================================== -->
+                <!-- COLLECTION DESCRIPTION -->
+                <!-- ====================================== -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Description
+
+                    </label>
+
+                    {{ form.description }}
+
+                    {% for error in form.description.errors %}
+
+                        <div class="text-danger small">
+
+                            {{ error }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- ====================================== -->
+                <!-- ACTION BUTTONS -->
+                <!-- ====================================== -->
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a
+                        href="{% url 'resource_manager:collection_list' %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        <i class="bi bi-check-lg"></i> Create Collection
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

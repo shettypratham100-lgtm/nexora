@@ -1,0 +1,107 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <div class="dashboard-header mb-4 d-flex align-items-center gap-3">
+        <div class="page-header-icon accent-amber"><i class="bi bi-star-fill"></i></div>
+        <div>
+            <h2 class="mb-0">Starred</h2>
+            <p class="text-muted mb-0">Your starred collections and resources, all in one place.</p>
+        </div>
+    </div>
+
+    {% if not starred_collections and not starred_resources %}
+
+        <div class="card">
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="bi bi-star"></i>
+                    Nothing starred yet. Click the star icon on any collection or resource to pin it here.
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+
+        {% if starred_collections %}
+
+            <div class="mb-4">
+
+                <h6 class="text-muted mb-3">Collections</h6>
+
+                <div class="row g-4">
+
+                    {% for collection in starred_collections %}
+
+                        <div class="col-md-6 col-lg-4">
+
+                            <a href="{% url 'resource_manager:collection_detail' collection.pk %}" class="card collection-card text-decoration-none">
+
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="collection-icon"><i class="bi bi-folder-fill"></i></div>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                </div>
+
+                                <div class="collection-name mt-2">{{ collection.name }}</div>
+                                <div class="collection-meta">{{ collection.resources.count }} Resources</div>
+
+                            </a>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+        {% if starred_resources %}
+
+            <div>
+
+                <h6 class="text-muted mb-3">Resources</h6>
+
+                <div class="card">
+
+                    <div class="card-body p-0">
+
+                        {% for resource in starred_resources %}
+
+                            <div class="trash-row">
+
+                                <a href="{% url 'resource_manager:view_resource' resource.pk %}" class="trash-row-info text-decoration-none">
+                                    <div class="trash-row-icon"><i class="bi bi-file-earmark-text"></i></div>
+                                    <div>
+                                        <div class="trash-row-title">{{ resource.title }}</div>
+                                        <div class="trash-row-meta">{{ resource.collection.name }}</div>
+                                    </div>
+                                </a>
+
+                                <form method="post" action="{% url 'resource_manager:toggle_star_resource' resource.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm" title="Unstar">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

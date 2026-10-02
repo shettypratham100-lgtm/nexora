@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Resend Verification Email{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center auth-page">
+
+    <div class="col-lg-5 col-md-7">
+
+        <div class="card shadow">
+
+            <div class="card-body p-4">
+
+                <img src="{% static 'images/logo.png' %}" alt="Nexora" class="auth-logo">
+
+                <h2 class="text-center mb-3">Resend Verification Email</h2>
+
+                <p class="text-center text-muted mb-4">
+                    Enter the email you registered with and we'll send a new verification link.
+                </p>
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Resend Email</button>
+
+                </form>
+
+                <hr>
+
+                <p class="text-center mb-0">
+                    <a href="{% url 'accounts:login' %}">Back to Login</a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

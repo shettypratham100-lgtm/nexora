@@ -1,0 +1,427 @@
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+
+.dashboard-header h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.2rem;
+}
+
+/* ---------- Welcome banner ---------- */
+
+.dashboard-welcome-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1.6rem 1.8rem;
+    border-radius: var(--radius-lg);
+    color: var(--text-on-dark);
+    background: linear-gradient(135deg, var(--violet-600), var(--blue-500));
+    box-shadow: var(--shadow-raised);
+}
+
+.dashboard-welcome-banner h2 {
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-welcome-banner p {
+    color: var(--text-on-dark);
+    opacity: 0.9;
+}
+
+.dashboard-welcome-banner-stat {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.dashboard-welcome-banner-stat .dwb-value {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+}
+
+.dashboard-welcome-banner-stat .dwb-label {
+    font-size: 0.78rem;
+    color: var(--text-on-dark-muted);
+    margin-top: 0.2rem;
+}
+
+/* ---------- Stat cards ---------- */
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 1.35rem 1.4rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-raised);
+}
+
+.stat-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--accent, var(--violet-600));
+}
+
+.stat-card .stat-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+}
+
+.stat-card .stat-value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.stat-card .stat-sub {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+.stat-card .stat-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--accent, var(--violet-600));
+    background: color-mix(in srgb, var(--accent, var(--violet-600)) 14%, white);
+    flex-shrink: 0;
+}
+
+.stat-card .stat-icon.stat-icon-ring {
+    background:
+        radial-gradient(closest-side, white 68%, transparent 70% 100%),
+        conic-gradient(var(--accent, var(--violet-600)) calc(var(--pct, 0) * 1%), color-mix(in srgb, var(--accent, var(--violet-600)) 14%, white) 0);
+}
+
+.stat-card.accent-violet { --accent: var(--violet-600); }
+.stat-card.accent-teal   { --accent: var(--teal-500); }
+.stat-card.accent-amber  { --accent: var(--amber-500); }
+.stat-card.accent-coral  { --accent: var(--coral-500); }
+.stat-card.accent-blue   { --accent: var(--blue-500); }
+
+/* ---------- Recent Resources list ---------- */
+
+.recent-resource-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.recent-resource-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.5rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s ease;
+}
+
+.recent-resource-row:hover {
+    background: var(--bg-canvas);
+    color: inherit;
+}
+
+.rr-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+    background: var(--violet-100);
+    color: var(--violet-600);
+}
+
+.rr-icon.rr-icon-lg {
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
+    border-radius: var(--radius-md);
+}
+
+.rr-icon.rr-type-pdf     { background: var(--coral-100); color: var(--coral-500); }
+.rr-icon.rr-type-docx    { background: #E3ECFC; color: #3B6BD6; }
+.rr-icon.rr-type-ppt     { background: var(--amber-100); color: var(--amber-500); }
+.rr-icon.rr-type-image   { background: var(--teal-100); color: var(--teal-500); }
+.rr-icon.rr-type-youtube { background: var(--coral-100); color: var(--coral-500); }
+.rr-icon.rr-type-website { background: var(--violet-100); color: var(--violet-600); }
+.rr-icon.rr-type-drive   { background: #E3ECFC; color: #3B6BD6; }
+
+.rr-info { flex-grow: 1; min-width: 0; }
+
+.rr-title {
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rr-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.rr-tag {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--violet-600);
+    background: var(--violet-100);
+    padding: 0.25em 0.65em;
+    border-radius: 999px;
+    flex-shrink: 0;
+}
+
+/* ---------- AI Summary panel ---------- */
+
+.ai-summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.ai-summary-list li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+.ai-summary-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--violet-500);
+}
+
+.ai-summary-list strong {
+    color: var(--text-primary);
+}
+
+/* ---------- Quick actions (2x2 grid) ---------- */
+
+.quick-action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+}
+
+/* ---------- Quick actions ---------- */
+
+.quick-action {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.95rem 1.1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-soft);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.quick-action:hover {
+    border-color: var(--violet-500);
+    background: var(--violet-100);
+    color: var(--ink-900);
+    transform: translateY(-2px);
+}
+
+.quick-action .quick-action-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--violet-100);
+    color: var(--violet-600);
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+/* ---------- Recent activity timeline ---------- */
+
+.activity-count-pill {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--violet-600);
+    background: var(--violet-100);
+    padding: 0.4em 0.9em;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    white-space: nowrap;
+}
+
+.activity-timeline {
+    position: relative;
+    padding-left: 2.6rem;
+}
+
+/* On the full Recent Activity page, the feed can run to dozens
+   of entries -- cap it to roughly one viewport's worth and
+   scroll inside that instead of the page itself growing
+   forever. The dashboard's compact preview widget doesn't use
+   this modifier, so it stays its natural short height. */
+.activity-timeline-scroll {
+    max-height: calc(100vh - 260px);
+    min-height: 260px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.activity-timeline::before {
+    content: "";
+    position: absolute;
+    left: 0.95rem;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    width: 2px;
+    background: var(--border-soft);
+}
+
+.activity-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.activity-item:last-child { padding-bottom: 0; }
+
+.activity-icon-dot {
+    position: absolute;
+    left: -2.6rem;
+    top: -0.15rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--dot, var(--violet-600));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    border: 3px solid var(--bg-surface);
+    box-shadow: 0 0 0 1px var(--border-soft);
+    flex-shrink: 0;
+}
+
+.activity-item.type-resource            { --dot: var(--violet-600); }
+.activity-item.type-resource_deleted    { --dot: var(--coral-500); }
+.activity-item.type-collection          { --dot: var(--teal-500); }
+.activity-item.type-collection_deleted  { --dot: var(--coral-500); }
+.activity-item.type-conversion          { --dot: var(--blue-500); }
+.activity-item.type-resume              { --dot: var(--amber-500); }
+
+.activity-title {
+    font-weight: 600;
+    font-size: 0.94rem;
+    color: var(--text-primary);
+    margin-bottom: 0.15rem;
+    text-decoration: none;
+}
+
+.activity-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.activity-item a.activity-title:hover { color: var(--violet-600); }
+
+/* ---------- Compact activity preview (dashboard widget) ---------- */
+
+.activity-timeline-compact {
+    padding-left: 2.3rem;
+}
+
+.activity-timeline-compact .activity-item {
+    padding-bottom: 1.1rem;
+}
+
+.activity-timeline-compact .activity-icon-dot {
+    left: -2.3rem;
+    width: 26px;
+    height: 26px;
+    font-size: 0.72rem;
+}
+
+.activity-timeline-compact .activity-title {
+    font-size: 0.86rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.activity-timeline-compact .activity-meta {
+    font-size: 0.74rem;
+}
+
+/* ---------- Latest resume score widget ---------- */
+
+.score-mini {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.score-mini-ring {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--violet-600);
+    background:
+        radial-gradient(closest-side, white 72%, transparent 73% 100%),
+        conic-gradient(var(--violet-600) calc(var(--pct, 0) * 1%), var(--border-soft) 0);
+    flex-shrink: 0;
+}

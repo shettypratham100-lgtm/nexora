@@ -1,0 +1,334 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block dashboard_content %}
+
+<!-- ===================================================== -->
+<!-- UPLOAD RESOURCE PAGE -->
+<!-- ===================================================== -->
+<!--
+    This page allows users to upload a new resource.
+
+    Supported Workflows:
+
+    1. Global Upload
+       - User chooses a collection.
+
+    2. Collection Upload
+       - Collection is already selected.
+       - Collection dropdown is hidden.
+-->
+<!-- ===================================================== -->
+   
+<div class="container py-4">
+
+    <!-- ============================================== -->
+    <!-- PAGE HEADER -->
+    <!-- ============================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="page-header-icon accent-violet"><i class="bi bi-cloud-upload-fill"></i></div>
+
+            <div>
+
+                <h2 class="mb-0">Upload Resource</h2>
+
+                <p class="text-muted mb-0">
+
+                    Add a new learning resource to your collection.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <a
+            href="{% url 'resource_manager:collection_list' %}"
+            class="btn btn-secondary"
+        >
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+
+    </div>
+
+
+    <!-- ============================================== -->
+    <!-- UPLOAD CARD -->
+    <!-- ============================================== -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-file-earmark-plus text-violet"></i> Resource Details
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <!-- ====================================== -->
+            <!-- SELECTED COLLECTION -->
+            <!-- ====================================== -->
+
+            {% if collection %}
+
+                <div class="alert alert-info">
+
+                    <strong>Uploading To:</strong>
+
+                    {{ collection.name }}
+
+                </div>
+
+            {% endif %}
+
+            <!-- ====================================== -->
+            <!-- RESOURCE FORM -->
+            <!-- ====================================== -->
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+                <!-- ================================== -->
+                <!-- FIRST ROW -->
+                <!-- ================================== -->
+
+                <div class="row">
+
+                    <!-- Collection -->
+
+                    {% if not collection %}
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="{{ form.collection.id_for_label }}"
+                            class="form-label"
+                        >
+                            Collection
+                        </label>
+
+                        {{ form.collection }}
+
+                        {% if form.collection.errors %}
+
+                            <div class="text-danger mt-1">
+
+                                {{ form.collection.errors }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    {% endif %}
+
+                    <!-- Resource Type -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="{{ form.resource_type.id_for_label }}"
+                            class="form-label"
+                        >
+                            Resource Type
+                        </label>
+
+                        {{ form.resource_type }}
+
+                        {% if form.resource_type.errors %}
+
+                            <div class="text-danger mt-1">
+
+                                {{ form.resource_type.errors }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <!-- ================================== -->
+                <!-- TITLE -->
+                <!-- ================================== -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="{{ form.title.id_for_label }}"
+                        class="form-label"
+                    >
+                        Resource Title
+                    </label>
+
+                    {{ form.title }}
+
+                    {% if form.title.errors %}
+
+                        <div class="text-danger mt-1">
+
+                            {{ form.title.errors }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <!-- ================================== -->
+                <!-- DESCRIPTION -->
+                <!-- ================================== -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="{{ form.description.id_for_label }}"
+                        class="form-label"
+                    >
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    {% if form.description.errors %}
+
+                        <div class="text-danger mt-1">
+
+                            {{ form.description.errors }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <!-- ================================== -->
+                <!-- FILE & URL -->
+                <!-- ================================== -->
+
+                <div class="row">
+
+                    <!-- File Upload -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="{{ form.file.id_for_label }}"
+                            class="form-label"
+                        >
+                            Upload File
+                        </label>
+
+                        {{ form.file }}
+
+                        {% if form.file.errors %}
+
+                            <div class="text-danger mt-1">
+
+                                {{ form.file.errors }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- External URL -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="{{ form.external_url.id_for_label }}"
+                            class="form-label"
+                        >
+                            External URL
+                        </label>
+
+                        {{ form.external_url }}
+
+                        {% if form.external_url.errors %}
+
+                            <div class="text-danger mt-1">
+
+                                {{ form.external_url.errors }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <!-- ================================== -->
+                <!-- ACTION BUTTONS -->
+                <!-- ================================== -->
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a
+                        href="{% url 'resource_manager:collection_list' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-success"
+                        id = "uploadBtn"
+                    >
+                        <i class="bi bi-upload"></i> Upload Resource
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.querySelector("form");
+    const uploadBtn = document.getElementById("uploadBtn");
+
+    form.addEventListener("submit", function () {
+
+        // Prevent multiple submissions
+        uploadBtn.disabled = true;
+
+        // Show loading spinner
+        uploadBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Uploading...
+        `;
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

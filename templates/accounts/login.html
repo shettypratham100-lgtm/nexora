@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- ====================================================== -->
+<!-- PAGE TITLE -->
+<!-- ====================================================== -->
+
+{% block title %}
+
+Login
+
+{% endblock %}
+
+<!-- ====================================================== -->
+<!-- PAGE CONTENT -->
+<!-- ====================================================== -->
+
+{% block content %}
+
+<div class="row justify-content-center auth-page">
+
+    <div class="col-lg-5 col-md-7">
+
+        <div class="card shadow">
+
+            <div class="card-body p-4">
+
+                <img src="{% static 'images/logo.png' %}" alt="Nexora" class="auth-logo">
+
+                <!-- ====================================== -->
+                <!-- PAGE HEADING -->
+                <!-- ====================================== -->
+
+                <h2 class="text-center mb-4">
+
+                    Welcome Back
+
+                </h2>
+
+                <p class="text-center text-muted">
+
+                    Login to continue to Nexora
+
+                </p>
+
+                <!-- ====================================== -->
+                <!-- LOGIN FORM -->
+                <!-- ====================================== -->
+
+                <form method="POST">
+
+                    {% csrf_token %}
+                    
+                    <!-- If the form has errors that don't belong to a specific field, show them. -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Username / Email -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Username or Email
+
+                        </label>
+
+                        {{ form.username_or_email }}
+                        <div class="text-danger">
+                        {{ form.username_or_email.errors }}
+                        </div>
+
+                    </div>
+
+                    <!-- Password -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Password
+
+                        </label>
+
+                        {{ form.password }}
+                        <div class="text-danger">
+                        {{ form.password.errors }}
+                        </div>
+
+                    </div>
+
+                    <!-- Forgot Password -->
+
+                    <div class="text-end mb-3">
+
+                        <a href="{% url 'accounts:password_reset' %}">
+
+                            Forgot Password?
+
+                        </a>
+
+                    </div>
+
+                    <!-- Login Button -->
+
+                    <div class="d-grid">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            Login
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr>
+
+                <p class="text-center">
+
+                    Don't have an account?
+
+                    <a href="{% url 'accounts:register' %}">
+
+                        Register
+
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

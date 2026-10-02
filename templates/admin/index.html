@@ -1,0 +1,623 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="nexora-dashboard">
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <div class="nexora-dashboard-header">
+
+        <div>
+
+            <h1>
+                Nexora Admin
+            </h1>
+
+            <p>
+                System overview and management
+            </p>
+
+        </div>
+
+        <a
+            href="/"
+            class="nexora-view-site"
+        >
+            View Nexora
+        </a>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- OVERVIEW CARDS -->
+    <!-- ================================================= -->
+
+    <div class="nexora-stat-grid">
+
+
+        <!-- USERS -->
+
+        <div class="nexora-stat-card">
+
+            <div class="nexora-stat-icon">
+                👥
+            </div>
+
+            <div class="nexora-stat-content">
+
+                <span>
+                    Total Users
+                </span>
+
+                <strong>
+                    {{ nexora_stats.total_users }}
+                </strong>
+
+                <small>
+                    {{ nexora_stats.new_users_today }}
+                    new today
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESOURCES -->
+
+        <div class="nexora-stat-card">
+
+            <div class="nexora-stat-icon">
+                📚
+            </div>
+
+            <div class="nexora-stat-content">
+
+                <span>
+                    Resources
+                </span>
+
+                <strong>
+                    {{ nexora_stats.total_resources }}
+                </strong>
+
+                <small>
+                    {{ nexora_stats.new_resources_week }}
+                    added this week
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESUME ANALYSIS -->
+
+        <div class="nexora-stat-card">
+
+            <div class="nexora-stat-icon">
+                📄
+            </div>
+
+            <div class="nexora-stat-content">
+
+                <span>
+                    Resume Analyses
+                </span>
+
+                <strong>
+                    {{ nexora_stats.total_analyses }}
+                </strong>
+
+                <small>
+                    {{ nexora_stats.analyses_today }}
+                    today
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOOLKIT -->
+
+        <div class="nexora-stat-card">
+
+            <div class="nexora-stat-icon">
+                🛠
+            </div>
+
+            <div class="nexora-stat-content">
+
+                <span>
+                    Document Jobs
+                </span>
+
+                <strong>
+                    {{ nexora_stats.total_jobs }}
+                </strong>
+
+                <small>
+                    {{ nexora_stats.toolkit_success }}
+                    successful
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- MAIN DASHBOARD GRID -->
+    <!-- ================================================= -->
+
+    <div class="nexora-dashboard-grid">
+
+
+        <!-- ============================================= -->
+        <!-- AI PROCESSING -->
+        <!-- ============================================= -->
+
+        <div class="nexora-panel">
+
+            <div class="nexora-panel-header">
+
+                <div>
+
+                    <h2>
+                        AI Processing
+                    </h2>
+
+                    <p>
+                        Current resource processing status
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="nexora-status-list">
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.ai_pending }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Processing
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.ai_processing }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Completed
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.ai_completed }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Failed
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.ai_failed }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- STORAGE -->
+        <!-- ============================================= -->
+
+        <div class="nexora-panel">
+
+            <div class="nexora-panel-header">
+
+                <div>
+
+                    <h2>
+                        Storage
+                    </h2>
+
+                    <p>
+                        Resource storage usage
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="nexora-storage-total">
+
+                <strong>
+                    {{ nexora_stats.total_storage_display }}
+                </strong>
+
+            </div>
+
+
+            <div class="nexora-storage-list">
+
+                {% for item in nexora_stats.storage_by_type %}
+
+                    <div class="nexora-status-row">
+
+                        <span>
+                            {{ item.resource_type }}
+                        </span>
+
+                        <strong>
+                            {{ item.size_display }}
+                        </strong>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="nexora-empty">
+                        No storage data available.
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- RESUME ANALYZER -->
+        <!-- ============================================= -->
+
+        <div class="nexora-panel">
+
+            <div class="nexora-panel-header">
+
+                <div>
+
+                    <h2>
+                        Resume Analyzer
+                    </h2>
+
+                    <p>
+                        Analyzer activity
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="nexora-status-list">
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Total Analyses
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.total_analyses }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Today
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.analyses_today }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        This Week
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.analyses_week }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Average ATS
+                    </span>
+
+                    <strong>
+
+                        {% if nexora_stats.avg_ats %}
+                            {{ nexora_stats.avg_ats }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- DOCUMENT TOOLKIT -->
+        <!-- ============================================= -->
+
+        <div class="nexora-panel">
+
+            <div class="nexora-panel-header">
+
+                <div>
+
+                    <h2>
+                        Document Toolkit
+                    </h2>
+
+                    <p>
+                        Document processing activity
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="nexora-status-list">
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Total Jobs
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.total_jobs }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Successful
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.toolkit_success }}
+                    </strong>
+
+                </div>
+
+
+                <div class="nexora-status-row">
+
+                    <span>
+                        Failed
+                    </span>
+
+                    <strong>
+                        {{ nexora_stats.toolkit_failed }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RECENT FAILED RESOURCES -->
+    <!-- ================================================= -->
+
+    <div class="nexora-panel nexora-failures-panel">
+
+        <div class="nexora-panel-header">
+
+            <div>
+
+                <h2>
+                    Recent Failed Resources
+                </h2>
+
+                <p>
+                    Resources that may require administrator attention
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="nexora-failure-list">
+
+            {% for item in nexora_stats.recent_failed_resources %}
+
+                <div class="nexora-failure-row">
+
+                    <div>
+
+                        <strong>
+                            Resource #{{ item.id }}
+                        </strong>
+
+                        <span>
+                            {{ item.created_at }}
+                        </span>
+
+                    </div>
+
+                    <span class="nexora-failure-status">
+                        Failed
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <div class="nexora-empty">
+                    No failed resources 🎉
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RECENT FAILED TOOL JOBS -->
+    <!-- ================================================= -->
+
+    <div class="nexora-panel nexora-failures-panel">
+
+        <div class="nexora-panel-header">
+
+            <div>
+
+                <h2>
+                    Recent Failed Document Jobs
+                </h2>
+
+                <p>
+                    Document processing jobs that failed
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="nexora-failure-list">
+
+            {% for item in nexora_stats.recent_failed_jobs %}
+
+                <div class="nexora-failure-row">
+
+                    <div>
+
+                        <strong>
+                            Job #{{ item.id }}
+                        </strong>
+
+                        <span>
+                            {{ item.created_at }}
+                        </span>
+
+                    </div>
+
+                    <span class="nexora-failure-status">
+                        Failed
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <div class="nexora-empty">
+                    No failed document jobs 🎉
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- MANAGEMENT -->
+    <!-- ================================================= -->
+
+    <div class="nexora-management">
+
+        <h2>
+            Management
+        </h2>
+
+        <div class="nexora-management-grid">
+
+            {% for app in app_list %}
+
+                <div class="nexora-management-card">
+
+                    <h3>
+                        {{ app.name }}
+                    </h3>
+
+                    {% for model in app.models %}
+
+                        <a
+                            href="{{ model.admin_url }}"
+                        >
+                            {{ model.name }}
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

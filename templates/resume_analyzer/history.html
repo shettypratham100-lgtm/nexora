@@ -1,0 +1,129 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block title %}
+Resume History
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="page-header-icon accent-amber"><i class="bi bi-clock-history"></i></div>
+
+            <div>
+                <h2 class="mb-0">Resume History</h2>
+                <p class="text-muted mb-0">Every past report, with your score trend over time.</p>
+            </div>
+
+        </div>
+
+        <a href="{% url 'upload_resume' %}" class="btn btn-primary">
+            <i class="bi bi-file-earmark-plus"></i> Analyze New Resume
+        </a>
+
+    </div>
+
+    <!-- ==================================================
+         HISTORY LIST
+    ================================================== -->
+
+    {% if analyses %}
+
+        <div class="card">
+
+            <div class="card-body p-0">
+
+                <div class="history-row-list">
+
+                    {% for analysis in analyses %}
+
+                        <div class="history-row">
+
+                            <div class="history-row-score
+                                {% if analysis.overall_score >= 80 %}score-tier-excellent
+                                {% elif analysis.overall_score >= 60 %}score-tier-good
+                                {% elif analysis.overall_score >= 40 %}score-tier-warn
+                                {% else %}score-tier-bad{% endif %}">
+                                {{ analysis.overall_score|default:"—" }}
+                            </div>
+
+                            <div class="history-row-body">
+
+                                <div class="history-row-title">
+                                    Resume analyzed
+                                    {% if analysis.score_delta is not None %}
+                                        {% if analysis.score_delta > 0 %}
+                                            <span class="history-delta delta-up"><i class="bi bi-arrow-up-short"></i>{{ analysis.score_delta }}</span>
+                                        {% elif analysis.score_delta < 0 %}
+                                            <span class="history-delta delta-down"><i class="bi bi-arrow-down-short"></i>{{ analysis.score_delta|cut:"-" }}</span>
+                                        {% else %}
+                                            <span class="history-delta delta-flat"><i class="bi bi-dash"></i>0</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="history-row-meta">
+                                    Overall {{ analysis.overall_score|default:"—" }}/100
+                                    &middot; ATS {{ analysis.ats_score_value|default:"—" }}/100
+                                    &middot; {{ analysis.created_at|date:"d M Y, g:i A" }}
+                                </div>
+
+                            </div>
+
+                            <div class="history-row-actions">
+
+                                <a href="{% url 'resume_result' analysis.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+
+                                <form method="post" action="{% url 'delete_resume_analysis' analysis.id %}"
+                                      data-confirm-title="Delete Resume Analysis"
+                                      data-confirm-message="Permanently delete this resume analysis? This cannot be undone."
+                                      data-confirm-button-label="Delete">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="card">
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="bi bi-clock-history"></i>
+                    No resume analyses yet.
+                    <div class="mt-3">
+                        <a href="{% url 'upload_resume' %}" class="btn btn-primary">
+                            Analyze Your Resume
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
